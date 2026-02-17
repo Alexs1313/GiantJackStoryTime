@@ -1,0 +1,101 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const KEY_CRYSTALS = '@JackStory:crystals';
+const KEY_COMPLETED_IDS = '@JackStory:completedStoryIds';
+const KEY_UNLOCKED_IDS = '@JackStory:unlockedStoryIds';
+
+export type Progress = {
+  crystals: number;
+  completedStoryIds: string[];
+  unlockedStoryIds: string[];
+};
+
+export async function loadProgress(): Promise<Progress> {
+  try {
+    const [crystalsStr, completedStr, unlockedStr] = await Promise.all([
+      AsyncStorage.getItem(KEY_CRYSTALS),
+      AsyncStorage.getItem(KEY_COMPLETED_IDS),
+      AsyncStorage.getItem(KEY_UNLOCKED_IDS),
+    ]);
+    const crystals = crystalsStr != null ? parseInt(crystalsStr, 10) : 0;
+    const completedStoryIds =
+      completedStr != null ? JSON.parse(completedStr) : [];
+    const unlockedStoryIds = unlockedStr != null ? JSON.parse(unlockedStr) : [];
+    return {
+      crystals: isNaN(crystals) ? 0 : crystals,
+      completedStoryIds: Array.isArray(completedStoryIds)
+        ? completedStoryIds
+        : [],
+      unlockedStoryIds: Array.isArray(unlockedStoryIds) ? unlockedStoryIds : [],
+    };
+  } catch {
+    return { crystals: 0, completedStoryIds: [], unlockedStoryIds: [] };
+  }
+}
+
+export async function saveProgress(progress: Progress): Promise<void> {
+  try {
+    await Promise.all([
+      AsyncStorage.setItem(KEY_CRYSTALS, String(progress.crystals)),
+      AsyncStorage.setItem(
+        KEY_COMPLETED_IDS,
+        JSON.stringify(progress.completedStoryIds),
+      ),
+      AsyncStorage.setItem(
+        KEY_UNLOCKED_IDS,
+        JSON.stringify(progress.unlockedStoryIds),
+      ),
+    ]);
+  } catch (_) {}
+}
+
+const DEFAULT_PROGRESS: Progress = {
+  crystals: 0,
+  completedStoryIds: [],
+  unlockedStoryIds: [],
+};
+
+export async function resetProgress(): Promise<Progress> {
+  await saveProgress(DEFAULT_PROGRESS);
+  return DEFAULT_PROGRESS;
+}
+
+const CRYSTALS_TO_UNLOCK = 5;
+
+export async function unlockStoryWithCrystals(
+  storyId: string,
+): Promise<Progress | null> {
+  const progress = await loadProgress();
+  const alreadyOpen =
+    progress.unlockedStoryIds.includes(storyId) ||
+    progress.completedStoryIds.includes(storyId);
+  if (alreadyOpen || progress.crystals < CRYSTALS_TO_UNLOCK) {
+    return null;
+  }
+  progress.crystals -= CRYSTALS_TO_UNLOCK;
+  progress.unlockedStoryIds = [...progress.unlockedStoryIds, storyId].sort(
+    (a, b) => parseInt(a, 10) - parseInt(b, 10),
+  );
+  await saveProgress(progress);
+  return progress;
+}
+
+export async function addCrystalsAndCompleteStory(
+  storyId: string,
+): Promise<Progress> {
+  const progress = await loadProgress();
+  if (progress.completedStoryIds.includes(storyId)) {
+    return progress;
+  }
+  progress.crystals += 5;
+  progress.completedStoryIds = [...progress.completedStoryIds, storyId].sort(
+    (a, b) => parseInt(a, 10) - parseInt(b, 10),
+  );
+  if (!progress.unlockedStoryIds.includes(storyId)) {
+    progress.unlockedStoryIds = [...progress.unlockedStoryIds, storyId].sort(
+      (a, b) => parseInt(a, 10) - parseInt(b, 10),
+    );
+  }
+  await saveProgress(progress);
+  return progress;
+}

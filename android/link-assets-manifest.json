@@ -1,0 +1,13 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "JackStorySrc/JackStoryAssets/fonts/kefa-regular.ttf",
+      "sha1": "a21df421eb0e531a3b6ead5d1470190c9afe9d6f"
+    },
+    {
+      "path": "JackStorySrc/JackStoryAssets/fonts/kefa-bold.ttf",
+      "sha1": "de689892f4a0fed508ee2d6b1a36b467efaa1b92"
+    }
+  ]
+}
