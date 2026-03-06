@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
 const ROUND_OPTIONS = [5, 10, 15] as const;
 
@@ -72,18 +73,14 @@ const TeamActivityRoundsScrn = () => {
           ))}
         </View>
 
-        <TouchableOpacity
-          activeOpacity={0.9}
-          onPress={handleNext}
-          style={styles.nextButtonWrap}
-        >
+        <PressableWithAnimation onPress={handleNext} style={styles.nextButtonWrap}>
           <ImageBackground
             source={require('../JackStoryAssets/images/jackstorybuttonlarg.png')}
             style={styles.nextButton}
           >
             <Text style={styles.buttonText}>NEXT</Text>
           </ImageBackground>
-        </TouchableOpacity>
+        </PressableWithAnimation>
       </ScrollView>
     </ImageBackground>
   );

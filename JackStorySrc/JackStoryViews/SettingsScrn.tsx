@@ -2,10 +2,12 @@ import {
   Alert,
   Image,
   ImageBackground,
+  Platform,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   Vibration,
   View,
 } from 'react-native';
@@ -15,12 +17,16 @@ import CustomSwitch from '../JackStoryComponents/CustomSwitch';
 import { useStore } from '../JackStoryStorage/settingsContext';
 import { resetProgress } from '../JackStoryStorage/progressStorage';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import LinearGradient from 'react-native-linear-gradient';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
 const SettingsScrn = () => {
   const navigation = useNavigation();
 
   const { backgroundMusic, setBackgroundMusic, vibration, setVibration } =
     useStore();
+
+  const { height } = useWindowDimensions();
 
   const handleResetProgress = () => {
     Alert.alert(
@@ -69,37 +75,37 @@ const SettingsScrn = () => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <ImageBackground
-          source={require('../JackStoryAssets/images/jackstoryheader.png')}
-          style={styles.headerFrame}
-          resizeMode="stretch"
-        >
+        <View style={styles.headerFrame}>
           <TouchableOpacity
             style={styles.backBtn}
             onPress={() => navigation.goBack()}
             activeOpacity={0.9}
           >
-            <Image
-              source={require('../JackStoryAssets/images/jackstoryback.png')}
-            />
+            <Image source={require('../JackStoryAssets/images/backarr.png')} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>SETTINGS</Text>
-        </ImageBackground>
+        </View>
 
         <View style={styles.contentWrap}>
-          <ImageBackground
-            source={require('../JackStoryAssets/images/jackstoryfrm.png')}
-            style={styles.settingsFrame}
-            resizeMode="stretch"
+          <View
+            style={[
+              styles.settingsFrame,
+              {
+                marginTop:
+                  Platform.OS === 'ios' ? height * 0.09 : height * 0.01,
+              },
+            ]}
           >
-            <View style={styles.settingsContainer}>
-              <View style={styles.settingRow}>
-                <Text style={styles.settingLabel}>MUSIC</Text>
-                <CustomSwitch
-                  value={backgroundMusic}
-                  onValueChange={musValue => toggleJackMusic(musValue)}
-                />
-              </View>
+            <View style={[styles.settingsContainer]}>
+              {Platform.OS === 'ios' && (
+                <View style={styles.settingRow}>
+                  <Text style={styles.settingLabel}>MUSIC</Text>
+                  <CustomSwitch
+                    value={backgroundMusic}
+                    onValueChange={musValue => toggleJackMusic(musValue)}
+                  />
+                </View>
+              )}
               <View style={styles.settingRow}>
                 <Text style={styles.settingLabel}>VIBRATION</Text>
                 <CustomSwitch
@@ -108,20 +114,16 @@ const SettingsScrn = () => {
                 />
               </View>
             </View>
-          </ImageBackground>
+          </View>
 
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={handleResetProgress}
-            style={styles.resetButtonWrap}
-          >
-            <ImageBackground
-              source={require('../JackStoryAssets/images/jackstoryreset.png')}
+          <PressableWithAnimation onPress={handleResetProgress}>
+            <LinearGradient
+              colors={['#4E0000', '#B40000']}
               style={styles.resetButton}
             >
               <Text style={styles.resetButtonText}>RESET PROGRESS</Text>
-            </ImageBackground>
-          </TouchableOpacity>
+            </LinearGradient>
+          </PressableWithAnimation>
         </View>
       </ScrollView>
     </ImageBackground>
@@ -141,43 +143,54 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   headerFrame: {
+    width: '88%',
+    alignSelf: 'center',
+    minHeight: 66,
+    marginBottom: 20,
+    paddingHorizontal: 12,
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#fff',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center',
-    width: '100%',
-    minHeight: 82,
-    marginBottom: 80,
   },
   backBtn: {
     position: 'absolute',
-    left: 26,
+    left: 12,
     top: 0,
     bottom: 0,
     justifyContent: 'center',
     zIndex: 1,
   },
   headerTitle: {
-    fontSize: 20,
-    color: '#000',
+    fontSize: 22,
+    color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
   contentWrap: {
     flex: 1,
     alignItems: 'center',
-    paddingHorizontal: 20,
   },
   settingsFrame: {
-    justifyContent: 'center',
+    width: '100%',
+    maxWidth: 360,
     alignSelf: 'center',
-    width: 360,
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.4)',
     marginBottom: 24,
-    minHeight: 252,
+    overflow: 'hidden',
   },
   settingsContainer: {
     padding: 28,
-    paddingHorizontal: 42,
-    gap: 35,
+    paddingHorizontal: 28,
+    gap: 28,
+    minHeight: Platform.OS === 'ios' ? 165 : 90,
+    justifyContent: 'center',
   },
   settingRow: {
     flexDirection: 'row',
@@ -185,21 +198,25 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
   },
   settingLabel: {
-    fontSize: 24,
-    color: '#000',
+    fontSize: 22,
+    color: '#fff',
     fontFamily: 'kefa-bold',
   },
   resetButtonWrap: {
     alignSelf: 'center',
   },
   resetButton: {
-    width: 314,
-    height: 83,
+    width: 300,
+    marginTop: 20,
+    minHeight: 56,
+    borderRadius: 7,
+    borderWidth: 0.7,
+    borderColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
   resetButtonText: {
-    fontSize: 22,
+    fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',

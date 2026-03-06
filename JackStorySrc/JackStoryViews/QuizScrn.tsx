@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackList } from '../JackStoryRoutes/StackWays';
 import { getStoryById } from '../JackStoryData/storiesWithQuizzes';
@@ -27,26 +27,35 @@ const QuizScrn = () => {
 
   const question = quiz[currentIndex];
   const isLast = currentIndex === total - 1;
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const handleSave = () => {
+  const advance = () => {
     if (selectedIndex === null) return;
     const newAnswers = [...answers, selectedIndex];
     setAnswers(newAnswers);
     setSelectedIndex(null);
     if (isLast) {
       const score = newAnswers.filter(
-        (a, i) => a === quiz[i].correctIndex,
+        (a, i) => a === quiz[i]?.correctIndex,
       ).length;
-      navigation.navigate('QuizResultsScrn', {
+      (navigation as any).navigate('QuizResultsScrn', {
         storyId,
         storyTitle: story?.title ?? 'Story',
         score,
         total,
       });
     } else {
-      setCurrentIndex(currentIndex + 1);
+      setCurrentIndex(i => i + 1);
     }
   };
+
+  useEffect(() => {
+    if (selectedIndex === null) return;
+    timerRef.current = setTimeout(advance, 1500);
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, [selectedIndex]);
 
   if (!story || total === 0) {
     return (
@@ -59,6 +68,12 @@ const QuizScrn = () => {
     );
   }
 
+  if (!question) {
+    return null;
+  }
+
+  const letters = ['A', 'B', 'C'];
+
   return (
     <ImageBackground
       source={require('../JackStoryAssets/images/jackstorrmaingb.png')}
@@ -68,76 +83,56 @@ const QuizScrn = () => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerRow}>
+        <View style={styles.headerFrame}>
           <TouchableOpacity
-            style={styles.homeButton}
-            onPress={() => navigation.replace('DashScrn' as never)}
+            style={styles.backBtn}
+            onPress={() => navigation.goBack()}
             activeOpacity={0.9}
           >
-            <Image
-              source={require('../JackStoryAssets/images/jackstoryhm.png')}
-            />
+            <Image source={require('../JackStoryAssets/images/backarr.png')} />
           </TouchableOpacity>
-          <ImageBackground
-            source={require('../JackStoryAssets/images/jackstorysmhead.png')}
-            style={styles.headerBanner}
-            resizeMode="stretch"
-          >
-            <Text style={styles.headerTitle}>QUIZ</Text>
-          </ImageBackground>
+          <Text style={styles.headerTitle}>QUIZZES</Text>
         </View>
 
         <View style={styles.panelWrap}>
-          <ImageBackground
-            source={require('../JackStoryAssets/images/jackstoryfrm.png')}
-            style={styles.quizFrame}
-            resizeMode="stretch"
-          >
+          <View style={styles.quizFrame}>
             <View style={styles.quizContent}>
-              <Text style={styles.storyTitle}>{story.title}</Text>
+              <Text style={styles.categoryTitle}>{story.title}</Text>
               <Text style={styles.questionCounter}>
-                QUESTION {currentIndex + 1}/{total}
+                Question {currentIndex + 1}
               </Text>
               <Text style={styles.questionText}>{question.question}</Text>
-              {question.options.map((opt, idx) => (
-                <TouchableOpacity
-                  key={idx}
-                  style={[
-                    styles.optionRow,
-                    selectedIndex === idx && styles.optionRowSelected,
-                  ]}
-                  onPress={() => setSelectedIndex(idx)}
-                  activeOpacity={0.8}
-                >
-                  <View style={styles.checkbox}>
-                    {selectedIndex === idx ? (
-                      <Image
-                        source={require('../JackStoryAssets/images/jackstorychk.png')}
-                      />
-                    ) : null}
-                  </View>
-                  <Text style={styles.optionText}>{opt}</Text>
-                </TouchableOpacity>
-              ))}
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={handleSave}
-                disabled={selectedIndex === null}
-                style={styles.saveButtonWrap}
-              >
-                <ImageBackground
-                  source={require('../JackStoryAssets/images/jackstorybutton.png')}
-                  style={styles.saveButton}
-                >
-                  <Text style={styles.saveButtonText}>SAVE</Text>
-                </ImageBackground>
-              </TouchableOpacity>
+              {question.options.map((opt, idx) => {
+                const isSelected = selectedIndex === idx;
+                const isCorrect = idx === question.correctIndex;
+                const showAsCorrect = isSelected && isCorrect;
+                const showAsWrong = isSelected && !isCorrect;
+                return (
+                  <TouchableOpacity
+                    key={idx}
+                    activeOpacity={0.8}
+                    onPress={() =>
+                      selectedIndex === null && setSelectedIndex(idx)
+                    }
+                    disabled={selectedIndex !== null}
+                    style={[
+                      styles.optionButton,
+                      showAsCorrect && styles.optionButtonCorrect,
+                      showAsWrong && styles.optionButtonWrong,
+                    ]}
+                  >
+                    <Text style={styles.optionText}>
+                      {letters[idx]}) {opt}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
             </View>
-          </ImageBackground>
+          </View>
         </View>
 
         <Image
-          source={require('../JackStoryAssets/images/jackstoryquizin.png')}
+          source={require('../JackStoryAssets/images/qjackk.png')}
           style={styles.characterImage}
         />
       </ScrollView>
@@ -153,15 +148,25 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingBottom: 40,
+    paddingBottom: 120,
     paddingTop: 60,
     paddingHorizontal: 15,
   },
-  headerRow: {
+  headerFrame: {
+    width: '88%',
+    alignSelf: 'center',
+    minHeight: 66,
+    marginBottom: 20,
+    paddingHorizontal: 12,
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#fff',
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    justifyContent: 'center',
   },
-  homeButton: {
+  backBtn: {
     position: 'absolute',
     left: 12,
     top: 0,
@@ -169,19 +174,9 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 1,
   },
-  homeIcon: {
-    fontSize: 24,
-    color: '#fff',
-  },
-  headerBanner: {
-    width: 170,
-    minHeight: 74,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   headerTitle: {
-    fontSize: 20,
-    color: '#000',
+    fontSize: 22,
+    color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
@@ -192,94 +187,81 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '100%',
     maxWidth: 370,
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#fff',
+    overflow: 'hidden',
   },
   quizContent: {
-    padding: 14,
-    paddingTop: 30,
-    paddingHorizontal: 45,
+    padding: 24,
+    paddingTop: 28,
+    paddingHorizontal: 20,
+    paddingBottom: 28,
   },
-  storyTitle: {
-    fontSize: 20,
-    color: '#000',
+  categoryTitle: {
+    fontSize: 24,
+    color: '#fff',
     fontFamily: 'kefa-bold',
-    marginBottom: 8,
-    marginTop: 30,
     textAlign: 'center',
+    marginBottom: 12,
   },
   questionCounter: {
-    fontSize: 14,
-    color: '#000',
-    fontFamily: 'kefa-bold',
+    fontSize: 16,
+    color: '#fff',
+    fontFamily: 'kefa-regular',
     marginBottom: 12,
     textAlign: 'center',
   },
   questionText: {
     fontSize: 16,
-    color: '#000',
-    fontFamily: 'kefa-bold',
-    marginBottom: 16,
+    color: '#fff',
+    fontFamily: 'kefa-regular',
+    marginBottom: 20,
     textAlign: 'center',
   },
-  optionRow: {
-    flexDirection: 'row',
+  optionButton: {
+    backgroundColor: '#7D5226',
+    borderRadius: 9,
+    paddingVertical: 14,
+    paddingHorizontal: 18,
+    marginBottom: 12,
     alignItems: 'center',
-    backgroundColor: 'transparent',
-    borderWidth: 3,
-    borderColor: '#000',
-    borderRadius: 7,
-    padding: 8,
-    marginBottom: 10,
   },
-  optionRowSelected: {
-    backgroundColor: 'transparent',
+  optionButtonCorrect: {
+    backgroundColor: '#349400',
   },
-  checkbox: {
-    width: 30,
-    height: 30,
-    borderWidth: 3,
-    borderColor: '#000',
-    borderRadius: 7,
-    marginRight: 12,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  checkmark: {
-    fontSize: 14,
-    color: '#000',
-    fontFamily: 'kefa-bold',
+  optionButtonWrong: {
+    backgroundColor: '#B40000',
   },
   optionText: {
-    flex: 1,
-    fontSize: 15,
-    color: '#000',
+    fontSize: 18,
+    color: '#fff',
     fontFamily: 'kefa-regular',
   },
   saveButtonWrap: {
-    alignSelf: 'center',
-    marginTop: 20,
-    top: 40,
-    zIndex: 1,
+    marginTop: 24,
+    alignSelf: 'stretch',
   },
   saveButton: {
-    width: 200,
-    height: 88,
+    height: 52,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 0.7,
+    borderColor: '#fff',
+  },
+  saveButtonDisabled: {
+    opacity: 0.5,
   },
   saveButtonText: {
-    fontSize: 22,
+    fontSize: 18,
     color: '#fff',
     fontFamily: 'kefa-bold',
-    textAlign: 'center',
-  },
-  characterWrap: {
-    alignItems: 'flex-end',
-    paddingRight: 16,
-    paddingTop: 8,
   },
   characterImage: {
     position: 'absolute',
-    right: -35,
+    right: -20,
     bottom: 0,
   },
   centered: {

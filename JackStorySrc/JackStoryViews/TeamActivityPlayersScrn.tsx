@@ -11,6 +11,7 @@ import {
 import React, { useState } from 'react';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackList } from '../JackStoryRoutes/StackWays';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
 const MAX_PLAYERS = 5;
 const PLAYER_COLORS = [
@@ -137,8 +138,7 @@ const TeamActivityPlayersScrn = () => {
           </ImageBackground>
         </View>
 
-        <TouchableOpacity
-          activeOpacity={0.9}
+        <PressableWithAnimation
           onPress={handleStart}
           disabled={players.length < 2}
           style={styles.startButtonWrap}
@@ -152,7 +152,7 @@ const TeamActivityPlayersScrn = () => {
           >
             <Text style={styles.buttonText}>START</Text>
           </ImageBackground>
-        </TouchableOpacity>
+        </PressableWithAnimation>
         <Image
           source={require('../JackStoryAssets/images/jackstormaxtxt.png')}
           style={{ alignSelf: 'center' }}

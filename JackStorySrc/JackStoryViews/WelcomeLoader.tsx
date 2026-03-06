@@ -9,7 +9,7 @@ import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import WebView from 'react-native-webview';
 
-const DELAY_MS = 500000000;
+const DELAY_MS = 5000;
 
 const campfireLoaderHTML = `
 <!DOCTYPE html>
@@ -198,10 +198,20 @@ const WelcomeLoader = () => {
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
-        <Image
-          source={require('../JackStoryAssets/images/loaderlogo.png')}
-          style={styles.icon}
-        />
+        <View
+          style={{
+            alignItems: 'center',
+            justifyContent: 'center',
+            alignSelf: 'center',
+            flex: 1,
+            bottom: 40,
+          }}
+        >
+          <Image
+            source={require('../JackStoryAssets/images/i.png')}
+            style={styles.icon}
+          />
+        </View>
 
         <View style={styles.webviewDock}>
           <WebView
@@ -226,7 +236,7 @@ const styles = StyleSheet.create({
     width: 233,
     height: 233,
     alignSelf: 'center',
-    marginTop: 80,
+    borderRadius: 70,
   },
   webviewDock: {
     alignSelf: 'center',

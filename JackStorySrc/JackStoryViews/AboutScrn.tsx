@@ -10,9 +10,11 @@ import {
 } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
 const aboutGJackStory =
-  "Giant Jack: Story Time is a cozy app with stories from Giant Jack, who shares strange, warm and a little funny tales from his world. You read stories, answer questions and gradually open new chapters for Jack's stones. There is also a separate activity for the company, where participants take turns calling out words for a given letter. The app plays cheerful music, and all data is stored only on your device. This is a space for stories, time together and a light mood.";
+  'This is an application with character, where you will find stories from Jack, separate quizzes and interactive activities with words. In the section with stories you can simply read and immerse yourself in the atmosphere, and in the quizzes you can test your attentiveness and intelligence. A separate activity offers words with a missing first letter, where you need to choose the correct option from three. Everything is presented in a bright style to spend time interestingly and with a light mood.';
 
 const AboutScrn = () => {
   const navigation = useNavigation();
@@ -30,57 +32,45 @@ const AboutScrn = () => {
 
   return (
     <ImageBackground
-      source={require('../JackStoryAssets/images/jackstorybg_image.png')}
+      source={require('../JackStoryAssets/images/jackstorrmaingb.png')}
       style={styles.imageBackground}
     >
       <ScrollView
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <ImageBackground
-          source={require('../JackStoryAssets/images/jackstoryheader.png')}
-          style={styles.headerFrame}
-          resizeMode="stretch"
-        >
+        <View style={styles.headerFrame}>
           <TouchableOpacity
             style={styles.backBtn}
             onPress={() => navigation.goBack()}
             activeOpacity={0.9}
           >
-            <Image
-              source={require('../JackStoryAssets/images/jackstoryback.png')}
-            />
+            <Image source={require('../JackStoryAssets/images/backarr.png')} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>ABOUT THE APP</Text>
-        </ImageBackground>
+        </View>
 
-        <View style={styles.contentWrap}>
-          <Image
-            source={require('../JackStoryAssets/images/jackstoryicon.png')}
-            style={styles.characterImage}
-          />
-
-          <ImageBackground
-            source={require('../JackStoryAssets/images/jackstoryfrm.png')}
-            style={styles.textFrame}
-            resizeMode="stretch"
-          >
+        <View style={styles.panelWrap}>
+          <View style={styles.textFrame}>
             <View style={styles.textContainer}>
               <Text style={styles.aboutText}>{aboutGJackStory}</Text>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={handleJckShare}
-                style={styles.shareButtonWrap}
-              >
-                <ImageBackground
-                  source={require('../JackStoryAssets/images/jackstoryshr.png')}
-                  style={styles.shareButton}
-                >
-                  <Text style={styles.shareButtonText}>SHARE</Text>
-                </ImageBackground>
-              </TouchableOpacity>
+              <Image
+                source={require('../JackStoryAssets/images/detjcsk.png')}
+                style={styles.characterImage}
+              />
             </View>
-          </ImageBackground>
+          </View>
+          <PressableWithAnimation
+            onPress={handleJckShare}
+            style={styles.shareButtonWrap}
+          >
+            <LinearGradient
+              colors={['#73006C', '#D900CB']}
+              style={styles.shareButton}
+            >
+              <Text style={styles.shareButtonText}>SHARE</Text>
+            </LinearGradient>
+          </PressableWithAnimation>
         </View>
       </ScrollView>
     </ImageBackground>
@@ -95,75 +85,85 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingBottom: 40,
     paddingTop: 60,
     paddingHorizontal: 15,
+    paddingBottom: 40,
   },
   headerFrame: {
+    width: '88%',
+    alignSelf: 'center',
+    minHeight: 66,
+    marginBottom: 20,
+    paddingHorizontal: 12,
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#fff',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center',
-    width: '100%',
-    minHeight: 82,
-    marginBottom: 20,
   },
   backBtn: {
     position: 'absolute',
-    left: 26,
+    left: 12,
     top: 0,
     bottom: 0,
     justifyContent: 'center',
     zIndex: 1,
   },
-
   headerTitle: {
-    fontSize: 20,
-    color: '#000',
+    fontSize: 22,
+    color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  contentWrap: {
+  panelWrap: {
     flex: 1,
-    alignItems: 'center',
-    paddingHorizontal: 20,
-  },
-  characterImage: {
-    width: 150,
-    height: 150,
-    marginBottom: 24,
-    overflow: 'hidden',
+    paddingHorizontal: 8,
   },
   textFrame: {
-    alignItems: 'center',
-    justifyContent: 'center',
     alignSelf: 'center',
+    width: '100%',
     maxWidth: 370,
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgb(255, 255, 255)',
+    overflow: 'hidden',
   },
   textContainer: {
-    padding: 44,
-    paddingTop: 58,
-    paddingHorizontal: 38,
-    paddingBottom: 80,
+    padding: 24,
+    paddingTop: 28,
+    paddingHorizontal: 28,
   },
   aboutText: {
     fontSize: 15,
-    color: '#000',
-    fontFamily: 'kefa-bold',
-    textAlign: 'center',
+    color: '#fff',
+    fontFamily: 'kefa-regular',
+    textAlign: 'left',
+    lineHeight: 22,
+    marginBottom: 20,
   },
-  shareButtonWrap: {
-    position: 'absolute',
-    bottom: -20,
+  characterImage: {
+    width: 120,
+    height: 120,
     alignSelf: 'center',
   },
+  shareButtonWrap: {
+    alignSelf: 'center',
+    top: -30,
+  },
   shareButton: {
-    width: 140,
-    height: 62,
+    width: 170,
+    height: 55,
+    borderRadius: 10,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 0.7,
+    borderColor: '#fff',
   },
   shareButtonText: {
-    fontSize: 22,
+    fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',

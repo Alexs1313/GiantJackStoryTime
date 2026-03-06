@@ -12,12 +12,8 @@ import React, { useEffect } from 'react';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackList } from '../JackStoryRoutes/StackWays';
 import { addCrystalsAndCompleteStory } from '../JackStoryStorage/progressStorage';
-
-const SUCCESS_MESSAGE =
-  "You passed the quiz with flying colors!\nI'm glad you read my story carefully\nand answered my questions correctly!\nSo you can exchange the stones for a\nnew story!";
-
-const FAIL_MESSAGE =
-  "Unfortunately, you didn't answer all the questions correctly. In order to unlock a new story, you need to pass the current quiz. Don't be discouraged, you have an infinite number of attempts!";
+import LinearGradient from 'react-native-linear-gradient';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
 const QuizResultsScrn = () => {
   const navigation = useNavigation();
@@ -40,18 +36,14 @@ const QuizResultsScrn = () => {
   const handleShare = async () => {
     try {
       await Share.share({
-        message: `I scored ${score}/${total} on the quiz for "${storyTitle}" in Giant Jack: Story Time!`,
+        message: `I scored ${score}/${total} in "${storyTitle}" quiz!`,
         title: 'Quiz result',
       });
     } catch (_) {}
   };
 
-  const handleRetry = () => {
-    navigation.navigate('QuizScrn', { storyId });
-  };
-
-  const handleStories = () => {
-    navigation.replace('JackStoriesScrn');
+  const handleRestart = () => {
+    (navigation as any).replace('QuizScrn', { storyId });
   };
 
   return (
@@ -63,83 +55,59 @@ const QuizResultsScrn = () => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerRow}>
+        <View style={styles.headerFrame}>
           <TouchableOpacity
-            style={styles.homeButton}
-            onPress={() => navigation.navigate('DashScrn' as never)}
+            style={styles.backBtn}
+            onPress={() =>
+              navigation.navigate('TabWays', {
+                screen: 'QuizCategoriesScrn',
+              } as never)
+            }
             activeOpacity={0.9}
           >
-            <Image
-              source={require('../JackStoryAssets/images/jackstoryhm.png')}
-            />
+            <Image source={require('../JackStoryAssets/images/backarr.png')} />
           </TouchableOpacity>
-          <ImageBackground
-            source={require('../JackStoryAssets/images/jackstorysmhead.png')}
-            style={styles.headerBanner}
-            resizeMode="stretch"
-          >
-            <Text style={styles.headerTitle}>RESULTS</Text>
-          </ImageBackground>
+          <Text style={styles.headerTitle}>QUIZ RESULT</Text>
         </View>
 
-        <View style={styles.panelWrap}>
-          <ImageBackground
-            source={require('../JackStoryAssets/images/jackstoryfrm.png')}
-            style={styles.resultFrame}
-            resizeMode="stretch"
-          >
-            <View style={styles.resultContent}>
-              <Text style={styles.storyTitle}>{storyTitle}</Text>
-              <Text style={styles.scoreText}>
-                {score}/{total}
+        <View style={styles.resultFrame}>
+          <View style={styles.resultContent}>
+            <Text style={styles.resultTitle}>
+              {passed ? 'Quiz successfully passed!' : 'Quiz completed'}
+            </Text>
+            <Text style={styles.categoryName}>{storyTitle}</Text>
+            <Text style={styles.scoreLine}>
+              Correct answers:{' '}
+              <Text style={styles.scoreHighlight}>
+                {score} out of {total}
               </Text>
-              <Text style={styles.messageText}>
-                {passed ? SUCCESS_MESSAGE : FAIL_MESSAGE}
-              </Text>
-            </View>
-          </ImageBackground>
+            </Text>
+          </View>
         </View>
 
-        <View style={styles.buttonsRow}>
-          {passed ? (
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={handleShare}
-              style={styles.shareButtonWrap}
-            >
-              <ImageBackground
-                source={require('../JackStoryAssets/images/jackstoryshr.png')}
-                style={styles.shareButton}
-              >
-                <Text style={styles.buttonText}>SHARE</Text>
-              </ImageBackground>
-            </TouchableOpacity>
-          ) : (
-            <TouchableOpacity
-              activeOpacity={0.9}
-              onPress={handleRetry}
-              style={styles.retryButtonWrap}
-            >
-              <ImageBackground
-                source={require('../JackStoryAssets/images/jackstorretry.png')}
-                style={styles.retryButton}
-              >
-                <Text style={styles.buttonText}>RETRY</Text>
-              </ImageBackground>
-            </TouchableOpacity>
-          )}
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={handleStories}
-            style={styles.storiesButtonWrap}
+        <View style={styles.buttonsColumn}>
+          <PressableWithAnimation
+            onPress={handleShare}
+            style={styles.shareButtonWrap}
           >
-            <ImageBackground
-              source={require('../JackStoryAssets/images/jackstorybuttonlarg.png')}
-              style={styles.storiesButton}
+            <LinearGradient
+              colors={['#C724B1', '#E91E8C']}
+              style={styles.shareButton}
             >
-              <Text style={styles.buttonText}>STORIES</Text>
-            </ImageBackground>
-          </TouchableOpacity>
+              <Text style={styles.buttonText}>SHARE</Text>
+            </LinearGradient>
+          </PressableWithAnimation>
+          <PressableWithAnimation
+            onPress={handleRestart}
+            style={styles.restartButtonWrap}
+          >
+            <LinearGradient
+              colors={['#200653', '#460CB9']}
+              style={styles.restartButton}
+            >
+              <Text style={styles.buttonText}>RESTART</Text>
+            </LinearGradient>
+          </PressableWithAnimation>
         </View>
 
         <Image
@@ -159,15 +127,25 @@ const styles = StyleSheet.create({
   },
   scrollContent: {
     flexGrow: 1,
-    paddingBottom: 40,
-    paddingTop: 60,
+    paddingBottom: 120,
+    paddingTop: 80,
     paddingHorizontal: 15,
   },
-  headerRow: {
+  headerFrame: {
+    width: '88%',
+    alignSelf: 'center',
+    minHeight: 66,
+    marginBottom: 30,
+    paddingHorizontal: 12,
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#fff',
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 16,
+    justifyContent: 'center',
   },
-  homeButton: {
+  backBtn: {
     position: 'absolute',
     left: 12,
     top: 0,
@@ -175,105 +153,91 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 1,
   },
-  headerBanner: {
-    width: 170,
-    minHeight: 74,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   headerTitle: {
-    fontSize: 20,
-    color: '#000',
+    fontSize: 22,
+    color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
-  },
-  panelWrap: {
-    paddingHorizontal: 8,
-    marginBottom: 20,
   },
   resultFrame: {
     alignSelf: 'center',
     width: '100%',
     maxWidth: 370,
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#fff',
+    marginBottom: 24,
+    overflow: 'hidden',
+    paddingBottom: 38,
   },
   resultContent: {
-    paddingTop: 40,
-    paddingHorizontal: 35,
-    paddingBottom: 50,
+    padding: 28,
+    paddingHorizontal: 28,
   },
-  storyTitle: {
+  resultTitle: {
+    fontSize: 24,
+    color: '#fff',
+    fontFamily: 'kefa-bold',
+    textAlign: 'center',
+    marginBottom: 12,
+  },
+  categoryName: {
     fontSize: 20,
-    color: '#000',
-    fontFamily: 'kefa-bold',
-    marginBottom: 8,
+    color: '#fff',
+    fontFamily: 'kefa-regular',
+    textAlign: 'center',
+    marginBottom: 16,
+  },
+  scoreLine: {
+    fontSize: 16,
+    color: '#fff',
+    fontFamily: 'kefa-regular',
     textAlign: 'center',
   },
-  scoreText: {
-    fontSize: 20,
-    color: '#000',
+  scoreHighlight: {
     fontFamily: 'kefa-bold',
-    marginBottom: 6,
-    textAlign: 'center',
+    color: '#FFB74D',
   },
-  messageText: {
-    fontSize: 15,
-    color: '#000',
-    fontFamily: 'kefa-bold',
-    textAlign: 'center',
-  },
-  buttonsRow: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    justifyContent: 'center',
+  buttonsColumn: {
     alignItems: 'center',
+    gap: 16,
   },
   shareButtonWrap: {
-    marginHorizontal: 6,
-    marginBottom: 12,
-    zIndex: 2,
+    alignSelf: 'center',
+    top: -50,
   },
   shareButton: {
-    width: 140,
-    height: 62,
+    width: 167,
+    height: 55,
+    borderRadius: 9,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 0.7,
+    borderColor: '#fff',
   },
-  retryButtonWrap: {
-    marginHorizontal: 6,
-    marginBottom: 12,
-    zIndex: 2,
+  restartButtonWrap: {
+    alignSelf: 'center',
+    top: -50,
   },
-  retryButton: {
-    width: 140,
-    height: 62,
+  restartButton: {
+    width: 175,
+    height: 55,
+    borderRadius: 9,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  storiesButtonWrap: {
-    marginHorizontal: 6,
-    marginBottom: 12,
-    zIndex: 2,
-  },
-  storiesButton: {
-    width: 236,
-    height: 75,
-    alignItems: 'center',
-    justifyContent: 'center',
+    borderWidth: 0.7,
+    borderColor: '#fff',
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  characterWrap: {
-    alignItems: 'flex-end',
-    paddingRight: 16,
-    paddingTop: 16,
-  },
   characterImage: {
     position: 'absolute',
-    right: -35,
+    right: -20,
     bottom: 0,
   },
 });

@@ -13,12 +13,14 @@ import TeamActivityRulesScrn from '../JackStoryViews/TeamActivityRulesScrn';
 import TeamActivityRoundsScrn from '../JackStoryViews/TeamActivityRoundsScrn';
 import TeamActivityPlayersScrn from '../JackStoryViews/TeamActivityPlayersScrn';
 import TeamActivityRoundScrn from '../JackStoryViews/TeamActivityRoundScrn';
+import TeamActivityGuessScrn from '../JackStoryViews/TeamActivityGuessScrn';
 import TeamActivityResultsScrn from '../JackStoryViews/TeamActivityResultsScrn';
+import TabWays from '../../TabWays';
 
 export type StackList = {
   WelcomeLoader: undefined;
   JackIntroduceScrn: undefined;
-  DashScrn: undefined;
+  TabWays: undefined;
   AboutScrn: undefined;
   SettingsScrn: undefined;
   JackStoriesScrn: undefined;
@@ -44,6 +46,7 @@ export type StackList = {
     playerIndex: number;
     scores: { correct: number; incorrect: number }[];
   };
+  TeamActivityGuessScrn: undefined;
   TeamActivityResultsScrn: {
     players: string[];
     scores: { correct: number; incorrect: number }[];
@@ -60,7 +63,7 @@ const StackWays: React.FC = () => {
         name="JackIntroduceScrn"
         component={JackIntroduceScrn}
       />
-      <NativeStack.Screen name="DashScrn" component={DashScrn} />
+      <NativeStack.Screen name="TabWays" component={TabWays} />
       <NativeStack.Screen name="AboutScrn" component={AboutScrn} />
       <NativeStack.Screen name="SettingsScrn" component={SettingsScrn} />
       <NativeStack.Screen name="JackStoriesScrn" component={JackStoriesScrn} />
@@ -82,6 +85,10 @@ const StackWays: React.FC = () => {
       <NativeStack.Screen
         name="TeamActivityRoundScrn"
         component={TeamActivityRoundScrn}
+      />
+      <NativeStack.Screen
+        name="TeamActivityGuessScrn"
+        component={TeamActivityGuessScrn}
       />
       <NativeStack.Screen
         name="TeamActivityResultsScrn"

@@ -8,9 +8,12 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackList } from '../JackStoryRoutes/StackWays';
+import LinearGradient from 'react-native-linear-gradient';
+import { markStoryAsRead } from '../JackStoryStorage/progressStorage';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
 const defaultStory = {
   storyId: '1',
@@ -24,6 +27,10 @@ const StoryDetailScrn = () => {
   const route = useRoute<RouteProp<StackList, 'StoryDetailScrn'>>();
   const { storyId, title, fullText } = route.params ?? defaultStory;
 
+  useEffect(() => {
+    markStoryAsRead(storyId);
+  }, [storyId]);
+
   const handleShare = async () => {
     try {
       await Share.share({
@@ -34,7 +41,7 @@ const StoryDetailScrn = () => {
   };
 
   const handleQuiz = () => {
-    navigation.navigate('QuizScrn', { storyId });
+    (navigation as any).navigate('QuizScrn', { storyId });
   };
 
   return (
@@ -46,64 +53,37 @@ const StoryDetailScrn = () => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <ImageBackground
-          source={require('../JackStoryAssets/images/jackstoryheader.png')}
-          style={styles.headerFrame}
-          resizeMode="stretch"
-        >
+        <View style={styles.headerFrame}>
           <TouchableOpacity
             style={styles.backBtn}
             onPress={() => navigation.goBack()}
             activeOpacity={0.9}
           >
-            <Image
-              source={require('../JackStoryAssets/images/jackstoryback.png')}
-            />
+            <Image source={require('../JackStoryAssets/images/backarr.png')} />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>JACK'S STORIES</Text>
-        </ImageBackground>
+        </View>
 
         <View style={styles.panelWrap}>
-          <ImageBackground
-            source={require('../JackStoryAssets/images/jackstoryfrm.png')}
-            style={styles.storyFrame}
-            resizeMode="stretch"
-          >
+          <View style={styles.storyFrame}>
             <View style={styles.storyContent}>
               <Text style={styles.storyTitle}>{title}</Text>
               <Text style={styles.storyBody}>{fullText}</Text>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={handleQuiz}
-                style={styles.quizButtonWrap}
-              >
-                <ImageBackground
-                  source={require('../JackStoryAssets/images/jackstorybutton.png')}
-                  style={styles.quizButton}
-                >
-                  <Text style={styles.quizButtonText}>QUIZ</Text>
-                </ImageBackground>
-              </TouchableOpacity>
+              <Image
+                source={require('../JackStoryAssets/images/detjcsk.png')}
+                style={styles.characterImage}
+              />
             </View>
-          </ImageBackground>
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={handleShare}
-            style={styles.shareButtonWrap}
-          >
-            <ImageBackground
-              source={require('../JackStoryAssets/images/jackstoryshr.png')}
+          </View>
+          <PressableWithAnimation onPress={handleShare} style={styles.shareButtonWrap}>
+            <LinearGradient
+              colors={['#73006C', '#D900CB']}
               style={styles.shareButton}
             >
               <Text style={styles.shareButtonText}>SHARE</Text>
-            </ImageBackground>
-          </TouchableOpacity>
+            </LinearGradient>
+          </PressableWithAnimation>
         </View>
-
-        <Image
-          source={require('../JackStoryAssets/images/jackstoryreadmr.png')}
-          style={styles.characterImage}
-        />
       </ScrollView>
     </ImageBackground>
   );
@@ -122,24 +102,30 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   headerFrame: {
+    width: '88%',
+    alignSelf: 'center',
+    minHeight: 66,
+    marginBottom: 20,
+    paddingHorizontal: 12,
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#fff',
+    flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center',
-    width: '100%',
-    minHeight: 82,
-    marginBottom: 16,
   },
   backBtn: {
     position: 'absolute',
-    left: 26,
+    left: 12,
     top: 0,
     bottom: 0,
     justifyContent: 'center',
     zIndex: 1,
   },
   headerTitle: {
-    fontSize: 20,
-    color: '#000',
+    fontSize: 22,
+    color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
@@ -151,63 +137,63 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     width: '100%',
     maxWidth: 370,
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.4)',
+    overflow: 'hidden',
   },
   storyContent: {
     padding: 24,
-    paddingTop: 50,
-    paddingHorizontal: 44,
-    paddingBottom: 20,
+    paddingTop: 28,
+    paddingHorizontal: 28,
+    paddingBottom: 134,
   },
   storyTitle: {
-    fontSize: 20,
-    color: '#000',
+    fontSize: 22,
+    color: '#fff',
     fontFamily: 'kefa-bold',
     marginBottom: 16,
     textAlign: 'center',
-    marginTop: 20,
   },
   storyBody: {
     fontSize: 15,
-    color: '#000',
-    fontFamily: 'kefa-bold',
-    textAlign: 'center',
+    color: '#fff',
+    fontFamily: 'kefa-regular',
+    textAlign: 'left',
+    lineHeight: 22,
+    paddingHorizontal: 4,
   },
-  quizButtonWrap: {
-    alignSelf: 'center',
-    top: 50,
-    zIndex: 1,
-  },
-  quizButton: {
-    width: 200,
-    height: 88,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+
   quizButtonText: {
-    fontSize: 22,
+    fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-
   shareButtonWrap: {
-    marginTop: 60,
+    alignSelf: 'center',
+    marginTop: 24,
+    top: -55,
   },
   shareButton: {
-    width: 140,
-    height: 62,
+    width: 170,
+    height: 55,
+    borderRadius: 7,
     alignItems: 'center',
     justifyContent: 'center',
+    borderWidth: 0.7,
+    borderColor: '#fff',
   },
   shareButtonText: {
-    fontSize: 22,
+    fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
   characterImage: {
     position: 'absolute',
-    right: -35,
     bottom: 0,
+    alignSelf: 'center',
   },
 });

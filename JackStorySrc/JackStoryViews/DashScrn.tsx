@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  useWindowDimensions,
   View,
 } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
@@ -16,9 +17,10 @@ import Sound from 'react-native-sound';
 const DashScrn = () => {
   const navigation = useNavigation();
   const { backgroundMusic, setBackgroundMusic, setVibration } = useStore();
-
+  const { height, width } = useWindowDimensions();
   const [musicIndexJackStory, setMusicIndexJackStory] = useState<number>(0);
   const [soundJackStory, setSoundJackStory] = useState<Sound | null>(null);
+  const isLandscape = height < width;
 
   const tracksJackStory = [
     'drift_sound-happy-comic-dancing-theme-377563.mp3',
@@ -143,86 +145,27 @@ const DashScrn = () => {
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
+        bounces={false}
       >
-        <View style={styles.jckMainWrap}>
-          <ImageBackground
-            source={require('../JackStoryAssets/images/jackstoryhomefr.png')}
-            style={styles.jackFrameIntroContainer}
-            resizeMode="stretch"
-          >
-            <View style={styles.textContainerIntro}>
-              <Image
-                source={require('../JackStoryAssets/images/jackstoryicon.png')}
-              />
+        <View style={[styles.jckMainWrap, { paddingTop: height * 0.1 }]}>
+          <View style={styles.welcomeContainer}>
+            <Text style={styles.jackStoryTtl}>
+              Welcome to Giant Jack: Story Time!
+            </Text>
+            <Text style={styles.jackStorySubttl}>
+              For your convenience, the bottom menu contains everything
+              important for quick navigation through the application!
+            </Text>
+          </View>
 
-              <View style={{ width: '90%' }}>
-                <Text style={styles.jackStoryTtl}>
-                  Welcome to Giant Jack: Story Time!
-                </Text>
-                <Text style={styles.jackStorySubttl}>
-                  {new Date().toLocaleDateString('en-GB', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric',
-                  })}
-                </Text>
-              </View>
-            </View>
-          </ImageBackground>
-
-          <TouchableOpacity
-            activeOpacity={0.9}
-            style={{ marginTop: 22, marginBottom: 12 }}
-            onPress={() => navigation.navigate('JackStoriesScrn' as never)}
-          >
-            <Image
-              source={require('../JackStoryAssets/images/jackstorybook.png')}
-            />
-          </TouchableOpacity>
-
-          <ImageBackground
-            source={require('../JackStoryAssets/images/jackstoryfrm.png')}
-            style={styles.jackFrameContainer}
-            resizeMode="stretch"
-          >
-            <View style={styles.textContainer}>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() =>
-                  navigation.navigate('TeamActivityRulesScrn' as never)
-                }
-              >
-                <ImageBackground
-                  source={require('../JackStoryAssets/images/jackstorybuttonlarg.png')}
-                  style={styles.jackButtonWrap}
-                >
-                  <Text style={styles.jackButtonText}>TEAM ACTIVITY</Text>
-                </ImageBackground>
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() => navigation.navigate('SettingsScrn' as never)}
-              >
-                <ImageBackground
-                  source={require('../JackStoryAssets/images/jackstorybuttonlarg.png')}
-                  style={styles.jackButtonWrap}
-                >
-                  <Text style={styles.jackButtonText}>SETTINGS</Text>
-                </ImageBackground>
-              </TouchableOpacity>
-              <TouchableOpacity
-                activeOpacity={0.9}
-                onPress={() => navigation.navigate('AboutScrn' as never)}
-              >
-                <ImageBackground
-                  source={require('../JackStoryAssets/images/jackstorybuttonlarg.png')}
-                  style={styles.jackButtonWrap}
-                >
-                  <Text style={styles.jackButtonText}>ABOUT</Text>
-                </ImageBackground>
-              </TouchableOpacity>
-            </View>
-          </ImageBackground>
+          <Image
+            source={require('../JackStoryAssets/images/homekjck.png')}
+            style={{
+              position: 'absolute',
+              bottom: isLandscape ? 0 : 80,
+              alignSelf: 'center',
+            }}
+          />
         </View>
       </ScrollView>
     </ImageBackground>
@@ -235,55 +178,61 @@ const styles = StyleSheet.create({
   jckMainWrap: {
     flex: 1,
     width: '100%',
-    height: '100%',
     alignItems: 'center',
-    justifyContent: 'center',
     padding: 20,
+    paddingBottom: 45,
   },
   imageBackground: {
     flex: 1,
   },
-  jackFrameIntroContainer: {
+  welcomeContainer: {
+    width: '100%',
+    backgroundColor: '#4B2703',
+    borderRadius: 9,
+    borderWidth: 1,
+    borderColor: '#fff',
+    padding: 20,
+    paddingHorizontal: 18,
     alignItems: 'center',
     justifyContent: 'center',
-    alignSelf: 'center',
-    maxWidth: 307,
-    minHeight: 160,
+    zIndex: 1,
   },
-  jackFrameContainer: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignSelf: 'center',
-    maxWidth: 370,
-    minHeight: 360,
+  welcomeTextWrap: {
+    flex: 1,
   },
-  textContainerIntro: {
-    padding: 30,
-    paddingLeft: 90,
-    paddingHorizontal: 50,
+  bookButtonWrap: {
+    marginTop: 22,
+    marginBottom: 12,
+  },
+  menuContainer: {
+    width: '100%',
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#fff',
+    padding: 20,
+    paddingHorizontal: 14,
     alignItems: 'center',
     justifyContent: 'center',
-    flexDirection: 'row',
-    gap: 10,
+    gap: 12,
   },
   textContainer: {
-    padding: 50,
-
     alignItems: 'center',
     justifyContent: 'center',
-    gap: 10,
+    gap: 12,
+    width: '100%',
   },
   jackStoryTtl: {
-    fontSize: 16,
-    color: '#000',
+    fontSize: 30,
+    color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
   jackStorySubttl: {
-    fontSize: 16,
-    color: '#000',
+    fontSize: 15,
+    color: '#fff',
     fontFamily: 'kefa-regular',
-    marginTop: 10,
+    marginTop: 20,
     textAlign: 'center',
   },
   jackButtonWrap: {

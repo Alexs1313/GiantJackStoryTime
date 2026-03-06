@@ -10,15 +10,8 @@ import {
 } from 'react-native';
 import React from 'react';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-
-const PLAYER_COLORS = [
-  '#FFC3C3',
-  '#FBC698',
-  '#FBEC98',
-  '#D9FB98',
-  '#98FBE8',
-  '#e0c3fc',
-];
+import LinearGradient from 'react-native-linear-gradient';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
 type ResultsParams = {
   players: string[];
@@ -30,22 +23,18 @@ const TeamActivityResultsScrn = () => {
   const route = useRoute<RouteProp<Record<string, ResultsParams>, string>>();
   const { players = [], scores = [] } = (route.params as ResultsParams) ?? {};
 
+  const correctCount = scores[0]?.correct ?? 0;
+
   const handleShare = async () => {
     try {
-      const scoreLines = players
-        .map((name, i) => {
-          const s = scores[i] ?? { correct: 0, incorrect: 0 };
-          return `${name}: ✓${s.correct} ×${s.incorrect}`;
-        })
-        .join('\n');
       await Share.share({
-        message: `Team Activity Results:\n${scoreLines}\n\nGiant Jack: Story Time!`,
+        message: `You are well done! Your result: ${correctCount} words.\n\nGiant Jack: Story Time!`,
         title: 'Team Activity Results',
       });
     } catch (_) {}
   };
 
-  const handleRestart = () => {
+  const handleTryAgain = () => {
     navigation.navigate('TeamActivityRulesScrn' as never);
   };
 
@@ -58,89 +47,62 @@ const TeamActivityResultsScrn = () => {
         contentContainerStyle={styles.scrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerRow}>
+        <View style={styles.headerFrame}>
           <TouchableOpacity
-            style={styles.homeButton}
-            onPress={() => navigation.replace('DashScrn' as never)}
+            style={styles.backBtn}
+            onPress={() =>
+              navigation.navigate('TabWays', {
+                screen: 'TeamActivityRulesScrn',
+              } as never)
+            }
             activeOpacity={0.9}
           >
-            <Image
-              source={require('../JackStoryAssets/images/jackstoryhm.png')}
-            />
+            <Image source={require('../JackStoryAssets/images/backarr.png')} />
           </TouchableOpacity>
-          <ImageBackground
-            source={require('../JackStoryAssets/images/jackstorysmhead.png')}
-            style={styles.headerBanner}
-            resizeMode="stretch"
-          >
-            <Text style={styles.headerTitle}>RESULTS</Text>
-          </ImageBackground>
+          <Text style={styles.headerTitle}>RESULTS</Text>
         </View>
 
         <View style={styles.panelWrap}>
-          <ImageBackground
-            source={require('../JackStoryAssets/images/jackstoryfrm.png')}
-            style={styles.frame}
-            resizeMode="stretch"
-          >
+          <View style={styles.frame}>
             <View style={styles.content}>
-              {players.map((name, idx) => {
-                const s = scores[idx] ?? { correct: 0, incorrect: 0 };
-                return (
-                  <View key={idx} style={styles.scoreRow}>
-                    <View
-                      style={[
-                        styles.playerChip,
-                        {
-                          backgroundColor:
-                            PLAYER_COLORS[idx % PLAYER_COLORS.length],
-                        },
-                      ]}
-                    >
-                      <Text style={styles.playerName}>{name}</Text>
-                    </View>
-                    <View style={styles.scoresWrap}>
-                      <Image
-                        source={require('../JackStoryAssets/images/jacksresok.png')}
-                      />
-                      <Text style={styles.scoreItem}>{s.correct}</Text>
-                      <Image
-                        source={require('../JackStoryAssets/images/jackresnook.png')}
-                      />
-                      <Text style={styles.scoreItem}>{s.incorrect}</Text>
-                    </View>
-                  </View>
-                );
-              })}
+              <Text style={styles.title}>YOU ARE WELL DONE!</Text>
+              <Text style={styles.subtitle}>Your result:</Text>
+              <View style={styles.resultRow}>
+                <Text style={styles.resultNumber}>{correctCount}</Text>
+                <Text style={styles.resultLabel}> words</Text>
+              </View>
+              <Image
+                source={require('../JackStoryAssets/images/resjacck.png')}
+                style={styles.characterImage}
+                resizeMode="contain"
+              />
             </View>
-          </ImageBackground>
+          </View>
         </View>
 
         <View style={styles.buttonsRow}>
-          <TouchableOpacity
-            activeOpacity={0.9}
+          <PressableWithAnimation
             onPress={handleShare}
             style={styles.shareButtonWrap}
           >
-            <ImageBackground
-              source={require('../JackStoryAssets/images/jackstoryshr.png')}
+            <LinearGradient
+              colors={['#C724B1', '#E91E8C']}
               style={styles.shareButton}
             >
               <Text style={styles.buttonText}>SHARE</Text>
-            </ImageBackground>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={handleRestart}
-            style={styles.restartButtonWrap}
+            </LinearGradient>
+          </PressableWithAnimation>
+          <PressableWithAnimation
+            onPress={handleTryAgain}
+            style={styles.tryAgainButtonWrap}
           >
-            <ImageBackground
-              source={require('../JackStoryAssets/images/jackstorybuttonlarg.png')}
-              style={styles.restartButton}
+            <LinearGradient
+              colors={['#200653', '#460CB9']}
+              style={styles.tryAgainButton}
             >
-              <Text style={styles.buttonText}>RESTART</Text>
-            </ImageBackground>
-          </TouchableOpacity>
+              <Text style={styles.buttonText}>TRY AGAIN</Text>
+            </LinearGradient>
+          </PressableWithAnimation>
         </View>
       </ScrollView>
     </ImageBackground>
@@ -157,13 +119,23 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingBottom: 40,
     paddingTop: 60,
-    paddingHorizontal: 15,
+    paddingHorizontal: 20,
   },
-  headerRow: {
+  headerFrame: {
+    width: '88%',
+    alignSelf: 'center',
+    minHeight: 66,
+    marginBottom: 34,
+    paddingHorizontal: 12,
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: '#fff',
+    flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    justifyContent: 'center',
   },
-  homeButton: {
+  backBtn: {
     position: 'absolute',
     left: 12,
     top: 0,
@@ -171,95 +143,97 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 1,
   },
-  headerBanner: {
-    width: 170,
-    minHeight: 74,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
   headerTitle: {
-    fontSize: 20,
-    color: '#000',
+    fontSize: 22,
+    color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
   panelWrap: {
-    paddingHorizontal: 8,
-    marginBottom: 24,
+    marginBottom: 28,
   },
   frame: {
     alignSelf: 'center',
     width: '100%',
     maxWidth: 370,
-    minHeight: 456,
+    backgroundColor: '#4B2703',
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(255,255,255,0.4)',
+    overflow: 'hidden',
   },
   content: {
-    paddingTop: 40,
-    paddingHorizontal: 44,
-    paddingBottom: 40,
-    marginTop: 40,
-  },
-  scoreRow: {
-    flexDirection: 'row',
+    paddingTop: 32,
+    paddingHorizontal: 24,
+    paddingBottom: 24,
     alignItems: 'center',
+  },
+  title: {
+    fontSize: 22,
+    color: '#fff',
+    fontFamily: 'kefa-bold',
+    textAlign: 'center',
     marginBottom: 12,
-    gap: 12,
-    justifyContent: 'space-between',
   },
-  playerChip: {
-    minWidth: 80,
-    minHeight: 36,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderWidth: 2,
-    borderColor: '#000',
-    borderRadius: 8,
-    paddingVertical: 10,
-    paddingHorizontal: 14,
-  },
-  playerName: {
-    fontSize: 16,
-    color: '#000',
-    fontFamily: 'kefa-bold',
-  },
-  scoresWrap: {
-    flexDirection: 'row',
-    gap: 10,
-    alignItems: 'center',
-  },
-  scoreItem: {
+  subtitle: {
     fontSize: 18,
-    color: '#000',
+    color: '#fff',
+    fontFamily: 'kefa-regular',
+    textAlign: 'center',
+    marginBottom: 8,
+  },
+  resultRow: {
+    flexDirection: 'row',
+    alignItems: 'baseline',
+    marginBottom: 20,
+  },
+  resultNumber: {
+    fontSize: 28,
+    color: '#FFB74D',
     fontFamily: 'kefa-bold',
+  },
+  resultLabel: {
+    fontSize: 22,
+    color: '#fff',
+    fontFamily: 'kefa-regular',
+  },
+  characterImage: {
+    width: 160,
+    height: 180,
   },
   buttonsRow: {
-    flexWrap: 'wrap',
-    justifyContent: 'center',
     alignItems: 'center',
-    gap: 12,
-    alignSelf: 'center',
-    bottom: 66,
+    gap: 16,
   },
   shareButtonWrap: {
-    marginBottom: 12,
+    alignSelf: 'center',
+    top: -30,
   },
   shareButton: {
-    width: 140,
-    height: 62,
+    width: 167,
+    height: 55,
+    borderRadius: 9,
+    borderWidth: 0.7,
+    borderColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
+    top: -30,
   },
-  restartButtonWrap: {
-    marginBottom: 12,
+  tryAgainButtonWrap: {
+    alignSelf: 'center',
+    top: -30,
   },
-  restartButton: {
-    width: 200,
-    height: 62,
+  tryAgainButton: {
+    width: 231,
+    height: 55,
+    borderRadius: 9,
+    borderWidth: 0.7,
+    borderColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
   buttonText: {
-    fontSize: 20,
+    fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
