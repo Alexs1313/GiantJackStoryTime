@@ -35,7 +35,7 @@ const TeamActivityResultsScrn = () => {
   };
 
   const handleTryAgain = () => {
-    navigation.navigate('TeamActivityRulesScrn' as never);
+    navigation.navigate('TeamActivityGuessScrn' as never);
   };
 
   return (
@@ -144,7 +144,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   headerTitle: {
-    fontSize: 22,
+    fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',

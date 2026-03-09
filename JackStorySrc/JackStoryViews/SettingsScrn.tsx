@@ -76,13 +76,6 @@ const SettingsScrn = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.headerFrame}>
-          <TouchableOpacity
-            style={styles.backBtn}
-            onPress={() => navigation.goBack()}
-            activeOpacity={0.9}
-          >
-            <Image source={require('../JackStoryAssets/images/backarr.png')} />
-          </TouchableOpacity>
           <Text style={styles.headerTitle}>SETTINGS</Text>
         </View>
 

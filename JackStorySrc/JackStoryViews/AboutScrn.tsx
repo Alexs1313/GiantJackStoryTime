@@ -40,13 +40,6 @@ const AboutScrn = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={styles.headerFrame}>
-          <TouchableOpacity
-            style={styles.backBtn}
-            onPress={() => navigation.goBack()}
-            activeOpacity={0.9}
-          >
-            <Image source={require('../JackStoryAssets/images/backarr.png')} />
-          </TouchableOpacity>
           <Text style={styles.headerTitle}>ABOUT THE APP</Text>
         </View>
 
@@ -87,7 +80,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingTop: 60,
     paddingHorizontal: 15,
-    paddingBottom: 40,
+    paddingBottom: 140,
   },
   headerFrame: {
     width: '88%',
@@ -112,7 +105,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   headerTitle: {
-    fontSize: 22,
+    fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',

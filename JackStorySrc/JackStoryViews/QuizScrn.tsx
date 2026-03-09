@@ -5,15 +5,18 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  Vibration,
   View,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
 import { StackList } from '../JackStoryRoutes/StackWays';
 import { getStoryById } from '../JackStoryData/storiesWithQuizzes';
+import { useStore } from '../JackStoryStorage/settingsContext';
 
 const QuizScrn = () => {
   const navigation = useNavigation();
+  const { vibration } = useStore();
   const route = useRoute<RouteProp<StackList, 'QuizScrn'>>();
   const { storyId } = route.params ?? { storyId: '1' };
 
@@ -33,6 +36,10 @@ const QuizScrn = () => {
     if (selectedIndex === null) return;
     const newAnswers = [...answers, selectedIndex];
     setAnswers(newAnswers);
+    const isCorrect = selectedIndex === quiz[currentIndex]?.correctIndex;
+    if (!isCorrect && vibration) {
+      Vibration.vibrate(120);
+    }
     setSelectedIndex(null);
     if (isLast) {
       const score = newAnswers.filter(
@@ -175,7 +182,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   headerTitle: {
-    fontSize: 22,
+    fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',

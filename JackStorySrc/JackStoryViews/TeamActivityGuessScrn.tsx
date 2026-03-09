@@ -6,6 +6,7 @@ import {
   Text,
   TouchableOpacity,
   useWindowDimensions,
+  Vibration,
   View,
 } from 'react-native';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
@@ -17,9 +18,11 @@ import {
   type WordWithOptions,
 } from '../JackStoryData/guessTheLetterWords';
 import { getLetterImage } from '../JackStoryData/teamActivityLetters';
+import { useStore } from '../JackStoryStorage/settingsContext';
 
 const TeamActivityGuessScrn = () => {
   const navigation = useNavigation();
+  const { vibration } = useStore();
 
   const [word, setWord] = useState<WordWithOptions>(getWordWithOptions);
   const [correctCount, setCorrectCount] = useState(0);
@@ -27,9 +30,7 @@ const TeamActivityGuessScrn = () => {
   const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
   const { height } = useWindowDimensions();
 
-  const liftAnims = useRef(
-    [0, 1, 2].map(() => new Animated.Value(0)),
-  ).current;
+  const liftAnims = useRef([0, 1, 2].map(() => new Animated.Value(0))).current;
 
   const nextWord = useCallback(() => {
     liftAnims.forEach(a => a.setValue(0));
@@ -48,7 +49,12 @@ const TeamActivityGuessScrn = () => {
     setSelectedIndex(index);
     const correct = index === word.correctIndex;
     if (correct) setCorrectCount(c => c + 1);
-    else setIncorrectCount(c => c + 1);
+    else {
+      setIncorrectCount(c => c + 1);
+      if (vibration) {
+        Vibration.vibrate(120);
+      }
+    }
     Animated.timing(liftAnims[index], {
       toValue: -50,
       duration: 350,
@@ -72,7 +78,11 @@ const TeamActivityGuessScrn = () => {
         <View style={styles.headerFrame}>
           <TouchableOpacity
             style={styles.backBtn}
-            onPress={() => navigation.goBack()}
+            onPress={() =>
+              navigation.navigate('TabWays', {
+                screen: 'TeamActivityRulesScrn',
+              } as never)
+            }
             activeOpacity={0.9}
           >
             <Image source={require('../JackStoryAssets/images/backarr.png')} />
@@ -127,7 +137,10 @@ const TeamActivityGuessScrn = () => {
           })}
         </View>
 
-        <PressableWithAnimation onPress={handleResults} style={styles.resultsWrap}>
+        <PressableWithAnimation
+          onPress={handleResults}
+          style={styles.resultsWrap}
+        >
           <LinearGradient
             colors={['#200653', '#460CB9']}
             style={styles.resultsButton}
@@ -153,7 +166,7 @@ const styles = StyleSheet.create({
     paddingBottom: 40,
   },
   headerFrame: {
-    width: '88%',
+    width: '92%',
     alignSelf: 'center',
     minHeight: 66,
     marginBottom: 24,
@@ -168,14 +181,14 @@ const styles = StyleSheet.create({
   },
   backBtn: {
     position: 'absolute',
-    left: 12,
+    left: 10,
     top: 0,
     bottom: 0,
     justifyContent: 'center',
     zIndex: 1,
   },
   headerTitle: {
-    fontSize: 22,
+    fontSize: 18,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
@@ -202,7 +215,7 @@ const styles = StyleSheet.create({
   lettersRow: {
     flexDirection: 'row',
     justifyContent: 'center',
-    gap: 16,
+    gap: 14,
     marginBottom: 32,
     flexWrap: 'wrap',
   },

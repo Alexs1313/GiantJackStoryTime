@@ -75,7 +75,10 @@ const StoryDetailScrn = () => {
               />
             </View>
           </View>
-          <PressableWithAnimation onPress={handleShare} style={styles.shareButtonWrap}>
+          <PressableWithAnimation
+            onPress={handleShare}
+            style={styles.shareButtonWrap}
+          >
             <LinearGradient
               colors={['#73006C', '#D900CB']}
               style={styles.shareButton}
@@ -124,7 +127,7 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   headerTitle: {
-    fontSize: 22,
+    fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',

@@ -223,7 +223,7 @@ const styles = StyleSheet.create({
     width: '100%',
   },
   jackStoryTtl: {
-    fontSize: 30,
+    fontSize: 26,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
