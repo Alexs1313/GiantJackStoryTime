@@ -3,6 +3,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import {
   Image,
   ImageBackground,
+  Pressable,
   ScrollView,
   Share,
   StyleSheet,
@@ -12,8 +13,6 @@ import {
 } from 'react-native';
 
 import React from 'react';
-
-import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
 
 type ResultsParams = {
   players: string[];
@@ -89,7 +88,7 @@ const TeamActivityResultsScrn = () => {
         </View>
 
         <View style={styles.jackStoryButtonsRow}>
-          <PressableWithAnimation
+          <Pressable
             onPress={handleJackStoryShare}
             style={styles.jackStoryShareButtonWrap}
           >
@@ -99,9 +98,9 @@ const TeamActivityResultsScrn = () => {
             >
               <Text style={styles.jackStoryButtonText}>SHARE</Text>
             </LinearGradient>
-          </PressableWithAnimation>
+          </Pressable>
 
-          <PressableWithAnimation
+          <Pressable
             onPress={handleJackStoryTryAgain}
             style={styles.jackStoryTryAgainButtonWrap}
           >
@@ -111,7 +110,7 @@ const TeamActivityResultsScrn = () => {
             >
               <Text style={styles.jackStoryButtonText}>TRY AGAIN</Text>
             </LinearGradient>
-          </PressableWithAnimation>
+          </Pressable>
         </View>
       </ScrollView>
     </ImageBackground>
