@@ -17,7 +17,7 @@ import { useNavigation } from '@react-navigation/native';
 
 import LinearGradient from 'react-native-linear-gradient';
 
-import { PressableWithAnimation } from '../JackstoryComponents/PressableWithAnimation';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 import {
   getWordWithOptions,
   type WordWithOptions,

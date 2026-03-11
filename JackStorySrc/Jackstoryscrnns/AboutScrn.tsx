@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-import { PressableWithAnimation } from '../JackstoryComponents/PressableWithAnimation';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
 const aboutGJackStory =
   'This is an application with character, where you will find stories from Jack, separate quizzes and interactive activities with words. In the section with stories you can simply read and immerse yourself in the atmosphere, and in the quizzes you can test your attentiveness and intelligence. A separate activity offers words with a missing first letter, where you need to choose the correct option from three. Everything is presented in a bright style to spend time interestingly and with a light mood.';

@@ -13,7 +13,7 @@ import { useNavigation, useRoute } from '@react-navigation/native';
 
 import LinearGradient from 'react-native-linear-gradient';
 import { markStoryAsRead } from '../Jackstorystorr/progressStorage';
-import { PressableWithAnimation } from '../JackstoryComponents/PressableWithAnimation';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
 const defaultStory = {
   storyId: '1',

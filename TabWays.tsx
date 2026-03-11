@@ -10,7 +10,7 @@ import SettingsScrn from './JackStorySrc/Jackstoryscrnns/SettingsScrn';
 
 import QuizCategoriesScrn from './JackStorySrc/Jackstoryscrnns/QuizCategoriesScrn';
 import TeamActivityRulesScrn from './JackStorySrc/Jackstoryscrnns/TeamActivityRulesScrn';
-import { PressableWithAnimation } from './JackStorySrc/JackstoryComponents/PressableWithAnimation';
+import { PressableWithAnimation } from './JackStorySrc/JackStoryComponents/PressableWithAnimation';
 
 const Tab = createBottomTabNavigator();
 

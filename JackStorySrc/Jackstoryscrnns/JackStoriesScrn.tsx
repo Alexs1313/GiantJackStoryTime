@@ -1,6 +1,6 @@
 // stories
 import { loadProgress } from '../Jackstorystorr/progressStorage';
-import { PressableWithAnimation } from '../JackstoryComponents/PressableWithAnimation';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 import {
   Image,
   ImageBackground,

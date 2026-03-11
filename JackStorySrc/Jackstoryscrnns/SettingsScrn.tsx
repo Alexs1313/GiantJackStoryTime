@@ -1,4 +1,4 @@
-import CustomSwitch from '../JackstoryComponents/CustomSwitch';
+import CustomSwitch from '../JackStoryComponents/CustomSwitch';
 import {
   Alert,
   ImageBackground,
@@ -17,7 +17,7 @@ import { resetProgress } from '../Jackstorystorr/progressStorage';
 
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
-import { PressableWithAnimation } from '../JackstoryComponents/PressableWithAnimation';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
 const SettingsScrn = () => {
   const { backgroundMusic, setBackgroundMusic, vibration, setVibration } =

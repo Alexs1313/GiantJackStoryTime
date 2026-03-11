@@ -1,6 +1,6 @@
 // categorites
 
-import { PressableWithAnimation } from '../JackstoryComponents/PressableWithAnimation';
+import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 import { STORIES_WITH_QUIZZES } from '../Jackstorydta/storiesWithQuizzes';
 import {
   Animated,
