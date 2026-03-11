@@ -10,7 +10,7 @@ import {
 import React, { useEffect, useRef, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
+import { PressableWithAnimation } from '../JackstoryComponents/PressableWithAnimation';
 
 const TEXTS = [
   {

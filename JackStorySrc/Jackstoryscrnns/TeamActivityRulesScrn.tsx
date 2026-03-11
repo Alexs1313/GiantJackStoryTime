@@ -1,4 +1,4 @@
-import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
+import { PressableWithAnimation } from '../JackstoryComponents/PressableWithAnimation';
 import {
   ImageBackground,
   ScrollView,

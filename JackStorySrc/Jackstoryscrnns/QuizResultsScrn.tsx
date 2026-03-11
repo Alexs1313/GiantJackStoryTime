@@ -1,7 +1,7 @@
 import { addCrystalsAndCompleteStory } from '../Jackstorystorr/progressStorage';
 import LinearGradient from 'react-native-linear-gradient';
 
-import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
+import { PressableWithAnimation } from '../JackstoryComponents/PressableWithAnimation';
 import {
   Image,
   ImageBackground,
