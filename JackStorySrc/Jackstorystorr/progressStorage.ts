@@ -14,12 +14,14 @@ export type Progress = {
 
 export async function loadProgress(): Promise<Progress> {
   try {
-    const [crystalsStr, completedStr, unlockedStr, readStr] = await Promise.all([
-      AsyncStorage.getItem(KEY_CRYSTALS),
-      AsyncStorage.getItem(KEY_COMPLETED_IDS),
-      AsyncStorage.getItem(KEY_UNLOCKED_IDS),
-      AsyncStorage.getItem(KEY_READ_STORY_IDS),
-    ]);
+    const [crystalsStr, completedStr, unlockedStr, readStr] = await Promise.all(
+      [
+        AsyncStorage.getItem(KEY_CRYSTALS),
+        AsyncStorage.getItem(KEY_COMPLETED_IDS),
+        AsyncStorage.getItem(KEY_UNLOCKED_IDS),
+        AsyncStorage.getItem(KEY_READ_STORY_IDS),
+      ],
+    );
     const crystals = crystalsStr != null ? parseInt(crystalsStr, 10) : 0;
     const completedStoryIds =
       completedStr != null ? JSON.parse(completedStr) : [];

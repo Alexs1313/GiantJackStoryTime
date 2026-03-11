@@ -13,19 +13,22 @@ type Props = {
 };
 
 /** Initial translate values: right/down use -offset, left/up use +offset (like motion BlurFade). */
-function getInitialTranslate(direction: Direction, offset: number): { x: number; y: number } {
+function getInitialTranslate(
+  direction: Direction,
+  offset: number,
+): { x: number; y: number } {
   switch (direction) {
-    case 'up': return { x: 0, y: offset };
-    case 'down': return { x: 0, y: -offset };
-    case 'left': return { x: offset, y: 0 };
-    case 'right': return { x: -offset, y: 0 };
+    case 'up':
+      return { x: 0, y: offset };
+    case 'down':
+      return { x: 0, y: -offset };
+    case 'left':
+      return { x: offset, y: 0 };
+    case 'right':
+      return { x: -offset, y: 0 };
   }
 }
 
-/**
- * Entrance animation: slide from direction + fade in (easeOut).
- * Similar to BlurFade from motion/react (blur not supported in RN).
- */
 export const BlurFadeView: React.FC<Props> = ({
   children,
   style,
@@ -70,7 +73,17 @@ export const BlurFadeView: React.FC<Props> = ({
     }, startDelay);
 
     return () => clearTimeout(timer);
-  }, [duration, delay, offset, direction, fromX, fromY, translateX, translateY, opacity]);
+  }, [
+    duration,
+    delay,
+    offset,
+    direction,
+    fromX,
+    fromY,
+    translateX,
+    translateY,
+    opacity,
+  ]);
 
   return (
     <Animated.View

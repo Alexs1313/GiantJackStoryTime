@@ -1,10 +1,5 @@
 import React, { useRef } from 'react';
-import {
-  Animated,
-  Pressable,
-  StyleProp,
-  ViewStyle,
-} from 'react-native';
+import { Animated, Pressable, StyleProp, ViewStyle } from 'react-native';
 
 type Props = {
   onPress: () => void;
