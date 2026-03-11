@@ -4,12 +4,13 @@ import DashScrn from './JackStorySrc/Jackstoryscrnns/DashScrn';
 import JackStoriesScrn from './JackStorySrc/Jackstoryscrnns/JackStoriesScrn';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image, StyleSheet } from 'react-native';
-import { PressableWithAnimation } from './JackStorySrc/Jackstorycomponents/PressableWithAnimation';
+
 import AboutScrn from './JackStorySrc/Jackstoryscrnns/AboutScrn';
 import SettingsScrn from './JackStorySrc/Jackstoryscrnns/SettingsScrn';
 
 import QuizCategoriesScrn from './JackStorySrc/Jackstoryscrnns/QuizCategoriesScrn';
 import TeamActivityRulesScrn from './JackStorySrc/Jackstoryscrnns/TeamActivityRulesScrn';
+import { PressableWithAnimation } from './JackStorySrc/Jackstorycomponents/PressableWithAnimation';
 
 const Tab = createBottomTabNavigator();
 
