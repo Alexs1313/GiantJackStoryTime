@@ -9,15 +9,15 @@ import {
   View,
 } from 'react-native';
 import React, { useEffect, useRef, useState } from 'react';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { StackList } from '../../Jackstoryroutees';
+import { useNavigation, useRoute } from '@react-navigation/native';
+
 import { getStoryById } from '../Jackstorydta/storiesWithQuizzes';
 import { useStore } from '../Jackstorystorr/settingsContext';
 
 const QuizScrn = () => {
   const navigation = useNavigation();
   const { vibration } = useStore();
-  const route = useRoute<RouteProp<StackList, 'QuizScrn'>>();
+  const route = useRoute();
   const { storyId } = route.params ?? { storyId: '1' };
 
   const jackStoryStory = getStoryById(storyId);

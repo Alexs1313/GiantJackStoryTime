@@ -34,7 +34,7 @@ const QuizCategoriesScrn = () => {
     Math.max(0, (STORIES_WITH_QUIZZES.length - 1) * itemWidth),
   );
   const scrollX = useRef(new Animated.Value(initialScrollX)).current;
-  const scrollViewRef = useRef<Animated.ScrollView>(null);
+  const scrollViewRef = useRef(null);
 
   const paddingHorizontal = Math.max(0, screenWidth / 2 - itemWidth / 2);
 

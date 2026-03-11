@@ -12,17 +12,13 @@ import {
 import React, { useCallback, useState } from 'react';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
 import { STORIES_LIST, type StoryItem } from '../Jackstorydta/storiesList';
-import { StackList } from '../../Jackstoryroutees';
-
-import type { StackNavigationProp } from '@react-navigation/stack';
 
 import LinearGradient from 'react-native-linear-gradient';
 
 export type { StoryItem };
 
 const JackStoriesScrn = () => {
-  const navigation =
-    useNavigation<StackNavigationProp<StackList, 'JackStoriesScrn'>>();
+  const navigation = useNavigation();
   const [readStoryIds, setReadStoryIds] = useState<string[]>([]);
 
   useFocusEffect(

@@ -201,7 +201,7 @@ const Jackwlcmloader = () => {
       >
         <View style={styles.jackStoryIconWrap}>
           <Image
-            source={require('../JackStoryAssets/images/i.png')}
+            source={require('../JackStoryAssets/images/icon.png')}
             style={styles.jackStoryIcon}
           />
         </View>

@@ -9,7 +9,6 @@ import {
   View,
 } from 'react-native';
 import React from 'react';
-
 import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
 
 const aboutGJackStory =

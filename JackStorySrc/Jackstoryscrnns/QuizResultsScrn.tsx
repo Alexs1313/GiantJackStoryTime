@@ -1,4 +1,3 @@
-import { StackList } from '../../Jackstoryroutees';
 import { addCrystalsAndCompleteStory } from '../Jackstorystorr/progressStorage';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -15,11 +14,11 @@ import {
 } from 'react-native';
 import React, { useEffect } from 'react';
 
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 
 const QuizResultsScrn = () => {
   const navigation = useNavigation();
-  const route = useRoute<RouteProp<StackList, 'QuizResultsScrn'>>();
+  const route = useRoute();
   const { storyId, storyTitle, score, total } = route.params ?? {
     storyId: '1',
     storyTitle: 'Stone by the Old Trail',

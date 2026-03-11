@@ -1,7 +1,7 @@
 // stack naviigation
 
 import TeamActivityResultsScrn from './JackStorySrc/Jackstoryscrnns/TeamActivityResultsScrn';
-import TabWays from './TabWays';
+
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 
@@ -21,44 +21,9 @@ import TeamActivityRulesScrn from './JackStorySrc/Jackstoryscrnns/TeamActivityRu
 
 import TeamActivityGuessScrn from './JackStorySrc/Jackstoryscrnns/TeamActivityGuessScrn';
 import Jackwlcmloader from './JackStorySrc/Jackstoryscrnns/Jackwlcmloader';
+import TabWays from './TabWays';
 
-export type StackList = {
-  WelcomeLoader: undefined;
-  JackIntroduceScrn: undefined;
-  TabWays: undefined;
-  AboutScrn: undefined;
-  SettingsScrn: undefined;
-  JackStoriesScrn: undefined;
-  StoryDetailScrn: {
-    storyId: string;
-    title: string;
-    fullText: string;
-  };
-  QuizScrn: { storyId: string };
-  QuizResultsScrn: {
-    storyId: string;
-    storyTitle: string;
-    score: number;
-    total: number;
-  };
-  TeamActivityRulesScrn: undefined;
-  TeamActivityRoundsScrn: undefined;
-  TeamActivityPlayersScrn: { rounds: number };
-  TeamActivityRoundScrn: {
-    rounds: number;
-    players: string[];
-    roundIndex: number;
-    playerIndex: number;
-    scores: { correct: number; incorrect: number }[];
-  };
-  TeamActivityGuessScrn: undefined;
-  TeamActivityResultsScrn: {
-    players: string[];
-    scores: { correct: number; incorrect: number }[];
-  };
-};
-
-const NativeStack = createStackNavigator<StackList>();
+const NativeStack = createStackNavigator();
 
 const Jackstoryroutees: React.FC = () => {
   return (

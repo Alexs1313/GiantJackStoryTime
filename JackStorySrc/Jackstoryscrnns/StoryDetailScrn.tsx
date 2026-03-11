@@ -9,8 +9,8 @@ import {
   View,
 } from 'react-native';
 import React, { useEffect } from 'react';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { StackList } from '../../Jackstoryroutees';
+import { useNavigation, useRoute } from '@react-navigation/native';
+
 import LinearGradient from 'react-native-linear-gradient';
 import { markStoryAsRead } from '../Jackstorystorr/progressStorage';
 import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
@@ -24,7 +24,7 @@ const defaultStory = {
 
 const StoryDetailScrn = () => {
   const navigation = useNavigation();
-  const route = useRoute<RouteProp<StackList, 'StoryDetailScrn'>>();
+  const route = useRoute();
   const { storyId, title, fullText } = route.params ?? defaultStory;
 
   useEffect(() => {
