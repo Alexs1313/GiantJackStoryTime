@@ -1,18 +1,16 @@
+import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
 import {
-  Image,
   ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
-const RULES_TEXT =
+const JACK_STORY_RULES_TEXT =
   'You are presented with a word with a missing first letter, and below it are three letter options. You need to choose the correct one to complete the word. The words change one after the other without any restrictions, and you can continue as long as you want. Stop when you decide - everything is simple and clear.';
 
 const TeamActivityRulesScrn = () => {
@@ -21,33 +19,35 @@ const TeamActivityRulesScrn = () => {
   return (
     <ImageBackground
       source={require('../JackStoryAssets/images/jackstorrmaingb.png')}
-      style={styles.imageBackground}
+      style={styles.jackStoryImageBackground}
     >
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={styles.jackStoryScrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerFrame}>
-          <Text style={styles.headerTitle}>ACTIVITY RULES</Text>
+        <View style={styles.jackStoryHeaderFrame}>
+          <Text style={styles.jackStoryHeaderTitle}>ACTIVITY RULES</Text>
         </View>
 
-        <View style={styles.panelWrap}>
-          <View style={styles.frame}>
-            <View style={styles.content}>
-              <Text style={styles.rulesText}>{RULES_TEXT}</Text>
+        <View style={styles.jackStoryPanelWrap}>
+          <View style={styles.jackStoryFrame}>
+            <View style={styles.jackStoryContent}>
+              <Text style={styles.jackStoryRulesText}>
+                {JACK_STORY_RULES_TEXT}
+              </Text>
             </View>
           </View>
         </View>
 
         <PressableWithAnimation
           onPress={() => navigation.navigate('TeamActivityGuessScrn' as never)}
-          style={styles.nextButtonWrap}
+          style={styles.jackStoryNextButtonWrap}
         >
           <LinearGradient
             colors={['#200653', '#460CB9']}
-            style={styles.nextButton}
+            style={styles.jackStoryNextButton}
           >
-            <Text style={styles.buttonText}>START</Text>
+            <Text style={styles.jackStoryButtonText}>START</Text>
           </LinearGradient>
         </PressableWithAnimation>
       </ScrollView>
@@ -58,16 +58,16 @@ const TeamActivityRulesScrn = () => {
 export default TeamActivityRulesScrn;
 
 const styles = StyleSheet.create({
-  imageBackground: {
+  jackStoryImageBackground: {
     flex: 1,
   },
-  scrollContent: {
+  jackStoryScrollContent: {
     flexGrow: 1,
     paddingBottom: 40,
     paddingTop: 60,
     paddingHorizontal: 15,
   },
-  headerFrame: {
+  jackStoryHeaderFrame: {
     width: '88%',
     alignSelf: 'center',
     minHeight: 66,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  backBtn: {
+  jackStoryBackBtn: {
     position: 'absolute',
     left: 12,
     top: 0,
@@ -89,18 +89,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 1,
   },
-  headerTitle: {
+  jackStoryHeaderTitle: {
     fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  panelWrap: {
+  jackStoryPanelWrap: {
     paddingHorizontal: 8,
     marginBottom: 24,
     marginTop: 50,
   },
-  frame: {
+  jackStoryFrame: {
     alignSelf: 'center',
     width: '100%',
     maxWidth: 370,
@@ -109,29 +109,29 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: 'rgba(255,255,255,0.4)',
   },
-  content: {
+  jackStoryContent: {
     paddingTop: 28,
     paddingHorizontal: 24,
     paddingBottom: 28,
   },
-  rulesTitle: {
+  jackStoryRulesTitle: {
     fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',
     marginBottom: 16,
     textAlign: 'center',
   },
-  rulesText: {
+  jackStoryRulesText: {
     fontSize: 15,
     color: '#fff',
     fontFamily: 'kefa-regular',
     textAlign: 'center',
     paddingHorizontal: 10,
   },
-  nextButtonWrap: {
+  jackStoryNextButtonWrap: {
     alignSelf: 'center',
   },
-  nextButton: {
+  jackStoryNextButton: {
     width: 221,
     height: 55,
     borderRadius: 9,
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  buttonText: {
+  jackStoryButtonText: {
     fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',

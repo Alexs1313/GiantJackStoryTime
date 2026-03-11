@@ -1,34 +1,31 @@
+import CustomSwitch from '../Jackstorycomponents/CustomSwitch';
 import {
   Alert,
-  Image,
   ImageBackground,
   Platform,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   useWindowDimensions,
-  Vibration,
   View,
 } from 'react-native';
-import React, { useState } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import CustomSwitch from '../JackStoryComponents/CustomSwitch';
-import { useStore } from '../JackStoryStorage/settingsContext';
-import { resetProgress } from '../JackStoryStorage/progressStorage';
+import React from 'react';
+
+import { useStore } from '../Jackstorystorr/settingsContext';
+
+import { resetProgress } from '../Jackstorystorr/progressStorage';
+
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
-import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
+import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
 
 const SettingsScrn = () => {
-  const navigation = useNavigation();
-
   const { backgroundMusic, setBackgroundMusic, vibration, setVibration } =
     useStore();
 
   const { height } = useWindowDimensions();
 
-  const handleResetProgress = () => {
+  const handleJackStoryResetProgress = () => {
     Alert.alert(
       'Reset Progress',
       'Are you sure you want to reset all progress? This cannot be undone.',
@@ -45,76 +42,86 @@ const SettingsScrn = () => {
     );
   };
 
-  const toggleJackVibration = async (vibValue: boolean) => {
+  const toggleJackStoryVibration = async (jackStoryVibValue: boolean) => {
     try {
       await AsyncStorage.setItem(
         'toggleVibrationValue',
-        JSON.stringify(vibValue),
+        JSON.stringify(jackStoryVibValue),
       );
-      setVibration(vibValue);
-    } catch (error) {
-      console.log('vibr err', error);
+      setVibration(jackStoryVibValue);
+    } catch (jackStoryError) {
+      console.log('vibr err', jackStoryError);
     }
   };
 
-  const toggleJackMusic = async (musValue: boolean) => {
+  const toggleJackStoryMusic = async (jackStoryMusValue: boolean) => {
     try {
-      await AsyncStorage.setItem('toggleMusicValue', JSON.stringify(musValue));
-      setBackgroundMusic(musValue);
-    } catch (error) {
-      console.log('mus err', error);
+      await AsyncStorage.setItem(
+        'toggleMusicValue',
+        JSON.stringify(jackStoryMusValue),
+      );
+      setBackgroundMusic(jackStoryMusValue);
+    } catch (jackStoryError) {
+      console.log('mus err', jackStoryError);
     }
   };
 
   return (
     <ImageBackground
       source={require('../JackStoryAssets/images/jackstorrmaingb.png')}
-      style={styles.imageBackground}
+      style={styles.jackStoryImageBackground}
     >
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={styles.jackStoryScrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerFrame}>
-          <Text style={styles.headerTitle}>SETTINGS</Text>
+        <View style={styles.jackStoryHeaderFrame}>
+          <Text style={styles.jackStoryHeaderTitle}>SETTINGS</Text>
         </View>
 
-        <View style={styles.contentWrap}>
+        <View style={styles.jackStoryContentWrap}>
           <View
             style={[
-              styles.settingsFrame,
+              styles.jackStorySettingsFrame,
               {
                 marginTop:
                   Platform.OS === 'ios' ? height * 0.09 : height * 0.01,
               },
             ]}
           >
-            <View style={[styles.settingsContainer]}>
+            <View style={styles.jackStorySettingsContainer}>
               {Platform.OS === 'ios' && (
-                <View style={styles.settingRow}>
-                  <Text style={styles.settingLabel}>MUSIC</Text>
+                <View style={styles.jackStorySettingRow}>
+                  <Text style={styles.jackStorySettingLabel}>MUSIC</Text>
                   <CustomSwitch
                     value={backgroundMusic}
-                    onValueChange={musValue => toggleJackMusic(musValue)}
+                    onValueChange={jackStoryMusValue =>
+                      toggleJackStoryMusic(jackStoryMusValue)
+                    }
                   />
                 </View>
               )}
-              <View style={styles.settingRow}>
-                <Text style={styles.settingLabel}>VIBRATION</Text>
+
+              <View style={styles.jackStorySettingRow}>
+                <Text style={styles.jackStorySettingLabel}>VIBRATION</Text>
                 <CustomSwitch
                   value={vibration}
-                  onValueChange={vibValue => toggleJackVibration(vibValue)}
+                  onValueChange={jackStoryVibValue =>
+                    toggleJackStoryVibration(jackStoryVibValue)
+                  }
                 />
               </View>
             </View>
           </View>
 
-          <PressableWithAnimation onPress={handleResetProgress}>
+          <PressableWithAnimation onPress={handleJackStoryResetProgress}>
             <LinearGradient
               colors={['#4E0000', '#B40000']}
-              style={styles.resetButton}
+              style={styles.jackStoryResetButton}
             >
-              <Text style={styles.resetButtonText}>RESET PROGRESS</Text>
+              <Text style={styles.jackStoryResetButtonText}>
+                RESET PROGRESS
+              </Text>
             </LinearGradient>
           </PressableWithAnimation>
         </View>
@@ -126,16 +133,16 @@ const SettingsScrn = () => {
 export default SettingsScrn;
 
 const styles = StyleSheet.create({
-  imageBackground: {
+  jackStoryImageBackground: {
     flex: 1,
   },
-  scrollContent: {
+  jackStoryScrollContent: {
     flexGrow: 1,
     paddingBottom: 40,
     paddingTop: 60,
     paddingHorizontal: 15,
   },
-  headerFrame: {
+  jackStoryHeaderFrame: {
     width: '88%',
     alignSelf: 'center',
     minHeight: 66,
@@ -149,7 +156,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  backBtn: {
+  jackStoryBackBtn: {
     position: 'absolute',
     left: 12,
     top: 0,
@@ -157,17 +164,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 1,
   },
-  headerTitle: {
+  jackStoryHeaderTitle: {
     fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  contentWrap: {
+  jackStoryContentWrap: {
     flex: 1,
     alignItems: 'center',
   },
-  settingsFrame: {
+  jackStorySettingsFrame: {
     width: '100%',
     maxWidth: 360,
     alignSelf: 'center',
@@ -178,27 +185,27 @@ const styles = StyleSheet.create({
     marginBottom: 24,
     overflow: 'hidden',
   },
-  settingsContainer: {
+  jackStorySettingsContainer: {
     padding: 28,
     paddingHorizontal: 28,
     gap: 28,
     minHeight: Platform.OS === 'ios' ? 165 : 90,
     justifyContent: 'center',
   },
-  settingRow: {
+  jackStorySettingRow: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
   },
-  settingLabel: {
+  jackStorySettingLabel: {
     fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',
   },
-  resetButtonWrap: {
+  jackStoryResetButtonWrap: {
     alignSelf: 'center',
   },
-  resetButton: {
+  jackStoryResetButton: {
     width: 300,
     marginTop: 20,
     minHeight: 56,
@@ -208,7 +215,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  resetButtonText: {
+  jackStoryResetButtonText: {
     fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',

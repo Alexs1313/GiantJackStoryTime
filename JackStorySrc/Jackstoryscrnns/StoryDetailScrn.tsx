@@ -10,10 +10,10 @@ import {
 } from 'react-native';
 import React, { useEffect } from 'react';
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { StackList } from '../JackStoryRoutes/StackWays';
+import { StackList } from '../../Jackstoryroutees';
 import LinearGradient from 'react-native-linear-gradient';
-import { markStoryAsRead } from '../JackStoryStorage/progressStorage';
-import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
+import { markStoryAsRead } from '../Jackstorystorr/progressStorage';
+import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
 
 const defaultStory = {
   storyId: '1',
@@ -31,59 +31,61 @@ const StoryDetailScrn = () => {
     markStoryAsRead(storyId);
   }, [storyId]);
 
-  const handleShare = async () => {
+  const handleJackStoryShare = async () => {
     try {
       await Share.share({
         message: `${title}\n\n${fullText}`,
         title,
       });
-    } catch (_) {}
-  };
-
-  const handleQuiz = () => {
-    (navigation as any).navigate('QuizScrn', { storyId });
+    } catch (_) {
+      console.log('error');
+    }
   };
 
   return (
     <ImageBackground
       source={require('../JackStoryAssets/images/jackstorrmaingb.png')}
-      style={styles.imageBackground}
+      style={styles.jackStoryImageBackground}
     >
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={styles.jackStoryScrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerFrame}>
+        <View style={styles.jackStoryHeaderFrame}>
           <TouchableOpacity
-            style={styles.backBtn}
+            style={styles.jackStoryBackBtn}
             onPress={() => navigation.goBack()}
             activeOpacity={0.9}
           >
             <Image source={require('../JackStoryAssets/images/backarr.png')} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>JACK'S STORIES</Text>
+
+          <Text style={styles.jackStoryHeaderTitle}>JACK'S STORIES</Text>
         </View>
 
-        <View style={styles.panelWrap}>
-          <View style={styles.storyFrame}>
-            <View style={styles.storyContent}>
-              <Text style={styles.storyTitle}>{title}</Text>
-              <Text style={styles.storyBody}>{fullText}</Text>
+        <View style={styles.jackStoryPanelWrap}>
+          <View style={styles.jackStoryStoryFrame}>
+            <View style={styles.jackStoryStoryContent}>
+              <Text style={styles.jackStoryStoryTitle}>{title}</Text>
+
+              <Text style={styles.jackStoryStoryBody}>{fullText}</Text>
+
               <Image
                 source={require('../JackStoryAssets/images/detjcsk.png')}
-                style={styles.characterImage}
+                style={styles.jackStoryCharacterImage}
               />
             </View>
           </View>
+
           <PressableWithAnimation
-            onPress={handleShare}
-            style={styles.shareButtonWrap}
+            onPress={handleJackStoryShare}
+            style={styles.jackStoryShareButtonWrap}
           >
             <LinearGradient
               colors={['#73006C', '#D900CB']}
-              style={styles.shareButton}
+              style={styles.jackStoryShareButton}
             >
-              <Text style={styles.shareButtonText}>SHARE</Text>
+              <Text style={styles.jackStoryShareButtonText}>SHARE</Text>
             </LinearGradient>
           </PressableWithAnimation>
         </View>
@@ -95,16 +97,16 @@ const StoryDetailScrn = () => {
 export default StoryDetailScrn;
 
 const styles = StyleSheet.create({
-  imageBackground: {
+  jackStoryImageBackground: {
     flex: 1,
   },
-  scrollContent: {
+  jackStoryScrollContent: {
     flexGrow: 1,
     paddingTop: 60,
     paddingHorizontal: 15,
     paddingBottom: 40,
   },
-  headerFrame: {
+  jackStoryHeaderFrame: {
     width: '88%',
     alignSelf: 'center',
     minHeight: 66,
@@ -118,7 +120,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  backBtn: {
+  jackStoryBackBtn: {
     position: 'absolute',
     left: 12,
     top: 0,
@@ -126,17 +128,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 1,
   },
-  headerTitle: {
+  jackStoryHeaderTitle: {
     fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  panelWrap: {
+  jackStoryPanelWrap: {
     flex: 1,
     paddingHorizontal: 8,
   },
-  storyFrame: {
+  jackStoryStoryFrame: {
     alignSelf: 'center',
     width: '100%',
     maxWidth: 370,
@@ -146,20 +148,20 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.4)',
     overflow: 'hidden',
   },
-  storyContent: {
+  jackStoryStoryContent: {
     padding: 24,
     paddingTop: 28,
     paddingHorizontal: 28,
     paddingBottom: 134,
   },
-  storyTitle: {
+  jackStoryStoryTitle: {
     fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',
     marginBottom: 16,
     textAlign: 'center',
   },
-  storyBody: {
+  jackStoryStoryBody: {
     fontSize: 15,
     color: '#fff',
     fontFamily: 'kefa-regular',
@@ -167,19 +169,18 @@ const styles = StyleSheet.create({
     lineHeight: 22,
     paddingHorizontal: 4,
   },
-
-  quizButtonText: {
+  jackStoryQuizButtonText: {
     fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  shareButtonWrap: {
+  jackStoryShareButtonWrap: {
     alignSelf: 'center',
     marginTop: 24,
     top: -55,
   },
-  shareButton: {
+  jackStoryShareButton: {
     width: 170,
     height: 55,
     borderRadius: 7,
@@ -188,13 +189,13 @@ const styles = StyleSheet.create({
     borderWidth: 0.7,
     borderColor: '#fff',
   },
-  shareButtonText: {
+  jackStoryShareButtonText: {
     fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  characterImage: {
+  jackStoryCharacterImage: {
     position: 'absolute',
     bottom: 0,
     alignSelf: 'center',

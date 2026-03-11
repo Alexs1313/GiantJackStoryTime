@@ -4,18 +4,18 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   useWindowDimensions,
   View,
 } from 'react-native';
 import React, { useCallback, useEffect, useState } from 'react';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
+import { useFocusEffect } from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useStore } from '../JackStoryStorage/settingsContext';
+
+import { useStore } from '../Jackstorystorr/settingsContext';
+
 import Sound from 'react-native-sound';
 
 const DashScrn = () => {
-  const navigation = useNavigation();
   const { backgroundMusic, setBackgroundMusic, setVibration } = useStore();
   const { height, width } = useWindowDimensions();
   const [musicIndexJackStory, setMusicIndexJackStory] = useState<number>(0);
@@ -150,7 +150,7 @@ const DashScrn = () => {
         <View style={[styles.jckMainWrap, { paddingTop: height * 0.1 }]}>
           <View style={styles.welcomeContainer}>
             <Text style={styles.jackStoryTtl}>
-              Welcome to Giant Jack: Story Time!
+              Welcome to Jack Giant Story Time!
             </Text>
             <Text style={styles.jackStorySubttl}>
               For your convenience, the bottom menu contains everything

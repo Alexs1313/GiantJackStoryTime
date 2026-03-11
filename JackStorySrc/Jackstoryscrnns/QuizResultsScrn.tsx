@@ -1,3 +1,8 @@
+import { StackList } from '../../Jackstoryroutees';
+import { addCrystalsAndCompleteStory } from '../Jackstorystorr/progressStorage';
+import LinearGradient from 'react-native-linear-gradient';
+
+import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
 import {
   Image,
   ImageBackground,
@@ -9,11 +14,8 @@ import {
   View,
 } from 'react-native';
 import React, { useEffect } from 'react';
+
 import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import { StackList } from '../JackStoryRoutes/StackWays';
-import { addCrystalsAndCompleteStory } from '../JackStoryStorage/progressStorage';
-import LinearGradient from 'react-native-linear-gradient';
-import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
 const QuizResultsScrn = () => {
   const navigation = useNavigation();
@@ -42,22 +44,22 @@ const QuizResultsScrn = () => {
     } catch (_) {}
   };
 
-  const handleRestart = () => {
+  const jackStoryHandleRestart = () => {
     (navigation as any).replace('QuizScrn', { storyId });
   };
 
   return (
     <ImageBackground
       source={require('../JackStoryAssets/images/jackstorrmaingb.png')}
-      style={styles.imageBackground}
+      style={styles.jackStoryImageBackground}
     >
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={styles.jackStoryScrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerFrame}>
+        <View style={styles.jackStoryHeaderFrame}>
           <TouchableOpacity
-            style={styles.backBtn}
+            style={styles.jackStoryBackBtn}
             onPress={() =>
               navigation.navigate('TabWays', {
                 screen: 'QuizCategoriesScrn',
@@ -67,52 +69,56 @@ const QuizResultsScrn = () => {
           >
             <Image source={require('../JackStoryAssets/images/backarr.png')} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>QUIZ RESULT</Text>
+
+          <Text style={styles.jackStoryHeaderTitle}>QUIZ RESULT</Text>
         </View>
 
-        <View style={styles.resultFrame}>
-          <View style={styles.resultContent}>
-            <Text style={styles.resultTitle}>
+        <View style={styles.jackStoryResultFrame}>
+          <View style={styles.jackStoryResultContent}>
+            <Text style={styles.jackStoryResultTitle}>
               {passed ? 'Quiz successfully passed!' : 'Quiz completed'}
             </Text>
-            <Text style={styles.categoryName}>{storyTitle}</Text>
-            <Text style={styles.scoreLine}>
+
+            <Text style={styles.jackStoryCategoryName}>{storyTitle}</Text>
+
+            <Text style={styles.jackStoryScoreLine}>
               Correct answers:{' '}
-              <Text style={styles.scoreHighlight}>
+              <Text style={styles.jackStoryScoreHighlight}>
                 {score} out of {total}
               </Text>
             </Text>
           </View>
         </View>
 
-        <View style={styles.buttonsColumn}>
+        <View style={styles.jackStoryButtonsColumn}>
           <PressableWithAnimation
             onPress={handleShare}
-            style={styles.shareButtonWrap}
+            style={styles.jackStoryShareButtonWrap}
           >
             <LinearGradient
               colors={['#C724B1', '#E91E8C']}
-              style={styles.shareButton}
+              style={styles.jackStoryShareButton}
             >
-              <Text style={styles.buttonText}>SHARE</Text>
+              <Text style={styles.jackStoryButtonText}>SHARE</Text>
             </LinearGradient>
           </PressableWithAnimation>
+
           <PressableWithAnimation
-            onPress={handleRestart}
-            style={styles.restartButtonWrap}
+            onPress={jackStoryHandleRestart}
+            style={styles.jackStoryRestartButtonWrap}
           >
             <LinearGradient
               colors={['#200653', '#460CB9']}
-              style={styles.restartButton}
+              style={styles.jackStoryRestartButton}
             >
-              <Text style={styles.buttonText}>RESTART</Text>
+              <Text style={styles.jackStoryButtonText}>RESTART</Text>
             </LinearGradient>
           </PressableWithAnimation>
         </View>
 
         <Image
           source={require('../JackStoryAssets/images/jackstorretsim.png')}
-          style={styles.characterImage}
+          style={styles.jackStoryCharacterImage}
         />
       </ScrollView>
     </ImageBackground>
@@ -122,16 +128,16 @@ const QuizResultsScrn = () => {
 export default QuizResultsScrn;
 
 const styles = StyleSheet.create({
-  imageBackground: {
+  jackStoryImageBackground: {
     flex: 1,
   },
-  scrollContent: {
+  jackStoryScrollContent: {
     flexGrow: 1,
     paddingBottom: 120,
     paddingTop: 80,
     paddingHorizontal: 15,
   },
-  headerFrame: {
+  jackStoryHeaderFrame: {
     width: '88%',
     alignSelf: 'center',
     minHeight: 66,
@@ -145,7 +151,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  backBtn: {
+  jackStoryBackBtn: {
     position: 'absolute',
     left: 12,
     top: 0,
@@ -153,13 +159,13 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 1,
   },
-  headerTitle: {
+  jackStoryHeaderTitle: {
     fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  resultFrame: {
+  jackStoryResultFrame: {
     alignSelf: 'center',
     width: '100%',
     maxWidth: 370,
@@ -171,43 +177,43 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     paddingBottom: 38,
   },
-  resultContent: {
+  jackStoryResultContent: {
     padding: 28,
     paddingHorizontal: 28,
   },
-  resultTitle: {
+  jackStoryResultTitle: {
     fontSize: 24,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
     marginBottom: 12,
   },
-  categoryName: {
+  jackStoryCategoryName: {
     fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-regular',
     textAlign: 'center',
     marginBottom: 16,
   },
-  scoreLine: {
+  jackStoryScoreLine: {
     fontSize: 16,
     color: '#fff',
     fontFamily: 'kefa-regular',
     textAlign: 'center',
   },
-  scoreHighlight: {
+  jackStoryScoreHighlight: {
     fontFamily: 'kefa-bold',
     color: '#FFB74D',
   },
-  buttonsColumn: {
+  jackStoryButtonsColumn: {
     alignItems: 'center',
     gap: 16,
   },
-  shareButtonWrap: {
+  jackStoryShareButtonWrap: {
     alignSelf: 'center',
     top: -50,
   },
-  shareButton: {
+  jackStoryShareButton: {
     width: 167,
     height: 55,
     borderRadius: 9,
@@ -216,11 +222,11 @@ const styles = StyleSheet.create({
     borderWidth: 0.7,
     borderColor: '#fff',
   },
-  restartButtonWrap: {
+  jackStoryRestartButtonWrap: {
     alignSelf: 'center',
     top: -50,
   },
-  restartButton: {
+  jackStoryRestartButton: {
     width: 175,
     height: 55,
     borderRadius: 9,
@@ -229,13 +235,13 @@ const styles = StyleSheet.create({
     borderWidth: 0.7,
     borderColor: '#fff',
   },
-  buttonText: {
+  jackStoryButtonText: {
     fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  characterImage: {
+  jackStoryCharacterImage: {
     position: 'absolute',
     right: -20,
     bottom: 0,

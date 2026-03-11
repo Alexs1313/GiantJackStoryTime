@@ -1,20 +1,22 @@
+// stories
+import { loadProgress } from '../Jackstorystorr/progressStorage';
+import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
 import {
   Image,
   ImageBackground,
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import React, { useCallback, useState } from 'react';
 import { useNavigation, useFocusEffect } from '@react-navigation/native';
-import { STORIES_LIST, type StoryItem } from '../JackStoryData/storiesList';
-import { StackList } from '../JackStoryRoutes/StackWays';
+import { STORIES_LIST, type StoryItem } from '../Jackstorydta/storiesList';
+import { StackList } from '../../Jackstoryroutees';
+
 import type { StackNavigationProp } from '@react-navigation/stack';
+
 import LinearGradient from 'react-native-linear-gradient';
-import { loadProgress } from '../JackStoryStorage/progressStorage';
-import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
 
 export type { StoryItem };
 
@@ -29,7 +31,7 @@ const JackStoriesScrn = () => {
     }, []),
   );
 
-  const onReadMore = (story: StoryItem) => {
+  const jackStoryReadMore = (story: StoryItem) => {
     navigation.navigate('StoryDetailScrn', {
       storyId: story.id,
       title: story.title,
@@ -40,41 +42,46 @@ const JackStoriesScrn = () => {
   return (
     <ImageBackground
       source={require('../JackStoryAssets/images/jackstorrmaingb.png')}
-      style={styles.imageBackground}
+      style={styles.jackStoryImageBackground}
     >
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={styles.jackStoryScrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerFrame}>
-          <Text style={styles.headerTitle}>JACK'S STORIES</Text>
+        <View style={styles.jackStoryHeaderFrame}>
+          <Text style={styles.jackStoryHeaderTitle}>JACK'S STORIES</Text>
         </View>
 
-        <View style={styles.cardsWrap}>
+        <View style={styles.jackStoryCardsWrap}>
           {STORIES_LIST.map(story => (
-            <View key={story.id} style={styles.cardWrap}>
-              <View style={styles.cardFrame}>
-                <View style={styles.cardContent}>
-                  <Text style={styles.cardTitle}>{story.title}</Text>
-                  <Text style={styles.cardDescription} numberOfLines={4}>
+            <View key={story.id} style={styles.jackStoryCardWrap}>
+              <View style={styles.jackStoryCardFrame}>
+                <View style={styles.jackStoryCardContent}>
+                  <Text style={styles.jackStoryCardTitle}>{story.title}</Text>
+
+                  <Text
+                    style={styles.jackStoryCardDescription}
+                    numberOfLines={4}
+                  >
                     {story.description}
                   </Text>
                 </View>
               </View>
+
               <PressableWithAnimation
-                onPress={() => onReadMore(story)}
-                style={styles.readMoreWrap}
+                onPress={() => jackStoryReadMore(story)}
+                style={styles.jackStoryReadMoreWrap}
               >
                 <LinearGradient
                   colors={['#200653', '#460CB9']}
-                  style={styles.readMoreButton}
+                  style={styles.jackStoryReadMoreButton}
                 >
                   {readStoryIds.includes(story.id) ? (
                     <Image
                       source={require('../JackStoryAssets/images/read.png')}
                     />
                   ) : (
-                    <Text style={styles.readMoreText}>READ MORE</Text>
+                    <Text style={styles.jackStoryReadMoreText}>READ MORE</Text>
                   )}
                 </LinearGradient>
               </PressableWithAnimation>
@@ -82,6 +89,7 @@ const JackStoriesScrn = () => {
           ))}
         </View>
       </ScrollView>
+
       <LinearGradient
         colors={['#00220500', '#002205']}
         pointerEvents="none"
@@ -100,16 +108,16 @@ const JackStoriesScrn = () => {
 export default JackStoriesScrn;
 
 const styles = StyleSheet.create({
-  imageBackground: {
+  jackStoryImageBackground: {
     flex: 1,
   },
-  scrollContent: {
+  jackStoryScrollContent: {
     flexGrow: 1,
     paddingBottom: 80,
     paddingTop: 60,
     paddingHorizontal: 15,
   },
-  headerFrame: {
+  jackStoryHeaderFrame: {
     width: '88%',
     alignSelf: 'center',
     minHeight: 66,
@@ -123,7 +131,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  backBtn: {
+  jackStoryBackBtn: {
     position: 'absolute',
     left: 12,
     top: 0,
@@ -131,20 +139,20 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 1,
   },
-  headerTitle: {
+  jackStoryHeaderTitle: {
     fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  cardsWrap: {
+  jackStoryCardsWrap: {
     paddingHorizontal: 8,
     paddingBottom: 24,
   },
-  cardWrap: {
+  jackStoryCardWrap: {
     marginBottom: 2,
   },
-  cardFrame: {
+  jackStoryCardFrame: {
     width: '100%',
     alignSelf: 'center',
     backgroundColor: '#4B2703',
@@ -153,18 +161,18 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.4)',
     overflow: 'hidden',
   },
-  cardContent: {
+  jackStoryCardContent: {
     padding: 24,
     paddingHorizontal: 20,
   },
-  cardTitle: {
+  jackStoryCardTitle: {
     fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',
     marginBottom: 12,
     textAlign: 'center',
   },
-  cardDescription: {
+  jackStoryCardDescription: {
     fontSize: 15,
     color: '#fff',
     fontFamily: 'kefa-regular',
@@ -173,12 +181,12 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     lineHeight: 22,
   },
-  readMoreWrap: {
+  jackStoryReadMoreWrap: {
     alignSelf: 'center',
     top: -30,
     zIndex: 1,
   },
-  readMoreButton: {
+  jackStoryReadMoreButton: {
     width: 220,
     height: 52,
     borderRadius: 7,
@@ -187,13 +195,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  readMoreText: {
+  jackStoryReadMoreText: {
     fontSize: 18,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  checkmark: {
+  jackStoryCheckmark: {
     fontSize: 28,
     color: '#fff',
     fontWeight: 'bold',

@@ -1,3 +1,6 @@
+// WelcomeLoader.tsx
+
+import WebView from 'react-native-webview';
 import {
   Image,
   ImageBackground,
@@ -7,11 +10,8 @@ import {
 } from 'react-native';
 import React, { useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import WebView from 'react-native-webview';
 
-const DELAY_MS = 5000;
-
-const campfireLoaderHTML = `
+const jackStoryCampfireLoaderHTML = `
 <!DOCTYPE html>
 <html>
 <head>
@@ -178,46 +178,39 @@ const campfireLoaderHTML = `
 </html>
 `;
 
-const WelcomeLoader = () => {
+const Jackwlcmloader = () => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const jackStoryTimer = setTimeout(() => {
       navigation.replace('JackIntroduceScrn' as never);
-    }, DELAY_MS);
-    return () => clearTimeout(timer);
+    }, 5000);
+
+    return () => clearTimeout(jackStoryTimer);
   }, [navigation]);
 
   return (
     <ImageBackground
       source={require('../JackStoryAssets/images/jackstorybg_image.png')}
-      style={styles.imageBackground}
+      style={styles.jackStoryImageBackground}
       resizeMode="cover"
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
-        <View
-          style={{
-            alignItems: 'center',
-            justifyContent: 'center',
-            alignSelf: 'center',
-            flex: 1,
-            bottom: 40,
-          }}
-        >
+        <View style={styles.jackStoryIconWrap}>
           <Image
             source={require('../JackStoryAssets/images/i.png')}
-            style={styles.icon}
+            style={styles.jackStoryIcon}
           />
         </View>
 
-        <View style={styles.webviewDock}>
+        <View style={styles.jackStoryWebviewDock}>
           <WebView
             originWhitelist={['*']}
-            source={{ html: campfireLoaderHTML }}
-            style={{ backgroundColor: 'transparent', width: 160, height: 150 }}
+            source={{ html: jackStoryCampfireLoaderHTML }}
+            style={styles.jackStoryWebview}
             scrollEnabled={false}
           />
         </View>
@@ -226,21 +219,33 @@ const WelcomeLoader = () => {
   );
 };
 
-export default WelcomeLoader;
+export default Jackwlcmloader;
 
 const styles = StyleSheet.create({
-  imageBackground: {
+  jackStoryImageBackground: {
     flex: 1,
   },
-  icon: {
+  jackStoryIconWrap: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+    flex: 1,
+    bottom: 40,
+  },
+  jackStoryIcon: {
     width: 233,
     height: 233,
     alignSelf: 'center',
     borderRadius: 70,
   },
-  webviewDock: {
+  jackStoryWebviewDock: {
     alignSelf: 'center',
     position: 'absolute',
     bottom: 30,
+  },
+  jackStoryWebview: {
+    backgroundColor: 'transparent',
+    width: 160,
+    height: 150,
   },
 });

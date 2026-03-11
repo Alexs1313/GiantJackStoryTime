@@ -1,14 +1,15 @@
+// bottom tab navigation
+
+import DashScrn from './JackStorySrc/Jackstoryscrnns/DashScrn';
+import JackStoriesScrn from './JackStorySrc/Jackstoryscrnns/JackStoriesScrn';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Image, StyleSheet } from 'react-native';
-import { PressableWithAnimation } from './JackStorySrc/JackStoryComponents/PressableWithAnimation';
-import AboutScrn from './JackStorySrc/JackStoryViews/AboutScrn';
-import SettingsScrn from './JackStorySrc/JackStoryViews/SettingsScrn';
-import DashScrn from './JackStorySrc/JackStoryViews/DashScrn';
-import JackStoriesScrn from './JackStorySrc/JackStoryViews/JackStoriesScrn';
-import TeamActivityResultsScrn from './JackStorySrc/JackStoryViews/TeamActivityResultsScrn';
-import QuizScrn from './JackStorySrc/JackStoryViews/QuizScrn';
-import QuizCategoriesScrn from './JackStorySrc/JackStoryViews/QuizCategoriesScrn';
-import TeamActivityRulesScrn from './JackStorySrc/JackStoryViews/TeamActivityRulesScrn';
+import { PressableWithAnimation } from './JackStorySrc/Jackstorycomponents/PressableWithAnimation';
+import AboutScrn from './JackStorySrc/Jackstoryscrnns/AboutScrn';
+import SettingsScrn from './JackStorySrc/Jackstoryscrnns/SettingsScrn';
+
+import QuizCategoriesScrn from './JackStorySrc/Jackstoryscrnns/QuizCategoriesScrn';
+import TeamActivityRulesScrn from './JackStorySrc/Jackstoryscrnns/TeamActivityRulesScrn';
 
 const Tab = createBottomTabNavigator();
 
@@ -21,7 +22,7 @@ const TabWays = () => {
         tabBarStyle: [styles.bottomTabBar],
         tabBarActiveTintColor: '#fff',
         tabBarInactiveTintColor: 'rgba(255, 255, 255, 0.45)',
-        tabBarButton: (props) => (
+        tabBarButton: props => (
           <PressableWithAnimation
             onPress={() => props.onPress?.(undefined as any)}
             style={props.style}

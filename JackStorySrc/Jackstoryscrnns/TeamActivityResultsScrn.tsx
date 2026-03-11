@@ -1,3 +1,5 @@
+import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
+import LinearGradient from 'react-native-linear-gradient';
 import {
   Image,
   ImageBackground,
@@ -8,10 +10,10 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
+
 import React from 'react';
-import { useNavigation, useRoute, RouteProp } from '@react-navigation/native';
-import LinearGradient from 'react-native-linear-gradient';
-import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
+
+import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
 
 type ResultsParams = {
   players: string[];
@@ -21,35 +23,36 @@ type ResultsParams = {
 const TeamActivityResultsScrn = () => {
   const navigation = useNavigation();
   const route = useRoute<RouteProp<Record<string, ResultsParams>, string>>();
-  const { players = [], scores = [] } = (route.params as ResultsParams) ?? {};
+  const { scores: jackStoryScores = [] } =
+    (route.params as ResultsParams) ?? {};
 
-  const correctCount = scores[0]?.correct ?? 0;
+  const jackStoryCorrectCount = jackStoryScores[0]?.correct ?? 0;
 
-  const handleShare = async () => {
+  const handleJackStoryShare = async () => {
     try {
       await Share.share({
-        message: `You are well done! Your result: ${correctCount} words.\n\nGiant Jack: Story Time!`,
+        message: `You are well done! Your result: ${jackStoryCorrectCount} words.\n\nGiant Jack: Story Time!`,
         title: 'Team Activity Results',
       });
     } catch (_) {}
   };
 
-  const handleTryAgain = () => {
+  const handleJackStoryTryAgain = () => {
     navigation.navigate('TeamActivityGuessScrn' as never);
   };
 
   return (
     <ImageBackground
       source={require('../JackStoryAssets/images/jackstorrmaingb.png')}
-      style={styles.imageBackground}
+      style={styles.jackStoryImageBackground}
     >
       <ScrollView
-        contentContainerStyle={styles.scrollContent}
+        contentContainerStyle={styles.jackStoryScrollContent}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerFrame}>
+        <View style={styles.jackStoryHeaderFrame}>
           <TouchableOpacity
-            style={styles.backBtn}
+            style={styles.jackStoryBackBtn}
             onPress={() =>
               navigation.navigate('TabWays', {
                 screen: 'TeamActivityRulesScrn',
@@ -59,48 +62,54 @@ const TeamActivityResultsScrn = () => {
           >
             <Image source={require('../JackStoryAssets/images/backarr.png')} />
           </TouchableOpacity>
-          <Text style={styles.headerTitle}>RESULTS</Text>
+
+          <Text style={styles.jackStoryHeaderTitle}>RESULTS</Text>
         </View>
 
-        <View style={styles.panelWrap}>
-          <View style={styles.frame}>
-            <View style={styles.content}>
-              <Text style={styles.title}>YOU ARE WELL DONE!</Text>
-              <Text style={styles.subtitle}>Your result:</Text>
-              <View style={styles.resultRow}>
-                <Text style={styles.resultNumber}>{correctCount}</Text>
-                <Text style={styles.resultLabel}> words</Text>
+        <View style={styles.jackStoryPanelWrap}>
+          <View style={styles.jackStoryFrame}>
+            <View style={styles.jackStoryContent}>
+              <Text style={styles.jackStoryTitle}>YOU ARE WELL DONE!</Text>
+              <Text style={styles.jackStorySubtitle}>Your result:</Text>
+
+              <View style={styles.jackStoryResultRow}>
+                <Text style={styles.jackStoryResultNumber}>
+                  {jackStoryCorrectCount}
+                </Text>
+                <Text style={styles.jackStoryResultLabel}> words</Text>
               </View>
+
               <Image
                 source={require('../JackStoryAssets/images/resjacck.png')}
-                style={styles.characterImage}
+                style={styles.jackStoryCharacterImage}
                 resizeMode="contain"
               />
             </View>
           </View>
         </View>
 
-        <View style={styles.buttonsRow}>
+        <View style={styles.jackStoryButtonsRow}>
           <PressableWithAnimation
-            onPress={handleShare}
-            style={styles.shareButtonWrap}
+            onPress={handleJackStoryShare}
+            style={styles.jackStoryShareButtonWrap}
           >
             <LinearGradient
               colors={['#C724B1', '#E91E8C']}
-              style={styles.shareButton}
+              style={styles.jackStoryShareButton}
             >
-              <Text style={styles.buttonText}>SHARE</Text>
+              <Text style={styles.jackStoryButtonText}>SHARE</Text>
             </LinearGradient>
           </PressableWithAnimation>
+
           <PressableWithAnimation
-            onPress={handleTryAgain}
-            style={styles.tryAgainButtonWrap}
+            onPress={handleJackStoryTryAgain}
+            style={styles.jackStoryTryAgainButtonWrap}
           >
             <LinearGradient
               colors={['#200653', '#460CB9']}
-              style={styles.tryAgainButton}
+              style={styles.jackStoryTryAgainButton}
             >
-              <Text style={styles.buttonText}>TRY AGAIN</Text>
+              <Text style={styles.jackStoryButtonText}>TRY AGAIN</Text>
             </LinearGradient>
           </PressableWithAnimation>
         </View>
@@ -112,16 +121,16 @@ const TeamActivityResultsScrn = () => {
 export default TeamActivityResultsScrn;
 
 const styles = StyleSheet.create({
-  imageBackground: {
+  jackStoryImageBackground: {
     flex: 1,
   },
-  scrollContent: {
+  jackStoryScrollContent: {
     flexGrow: 1,
     paddingBottom: 40,
     paddingTop: 60,
     paddingHorizontal: 20,
   },
-  headerFrame: {
+  jackStoryHeaderFrame: {
     width: '88%',
     alignSelf: 'center',
     minHeight: 66,
@@ -135,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  backBtn: {
+  jackStoryBackBtn: {
     position: 'absolute',
     left: 12,
     top: 0,
@@ -143,16 +152,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     zIndex: 1,
   },
-  headerTitle: {
+  jackStoryHeaderTitle: {
     fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  panelWrap: {
+  jackStoryPanelWrap: {
     marginBottom: 28,
   },
-  frame: {
+  jackStoryFrame: {
     alignSelf: 'center',
     width: '100%',
     maxWidth: 370,
@@ -162,54 +171,54 @@ const styles = StyleSheet.create({
     borderColor: 'rgba(255,255,255,0.4)',
     overflow: 'hidden',
   },
-  content: {
+  jackStoryContent: {
     paddingTop: 32,
     paddingHorizontal: 24,
     paddingBottom: 24,
     alignItems: 'center',
   },
-  title: {
+  jackStoryTitle: {
     fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
     marginBottom: 12,
   },
-  subtitle: {
+  jackStorySubtitle: {
     fontSize: 18,
     color: '#fff',
     fontFamily: 'kefa-regular',
     textAlign: 'center',
     marginBottom: 8,
   },
-  resultRow: {
+  jackStoryResultRow: {
     flexDirection: 'row',
     alignItems: 'baseline',
     marginBottom: 20,
   },
-  resultNumber: {
+  jackStoryResultNumber: {
     fontSize: 28,
     color: '#FFB74D',
     fontFamily: 'kefa-bold',
   },
-  resultLabel: {
+  jackStoryResultLabel: {
     fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-regular',
   },
-  characterImage: {
+  jackStoryCharacterImage: {
     width: 160,
     height: 180,
   },
-  buttonsRow: {
+  jackStoryButtonsRow: {
     alignItems: 'center',
     gap: 16,
   },
-  shareButtonWrap: {
+  jackStoryShareButtonWrap: {
     alignSelf: 'center',
     top: -30,
   },
-  shareButton: {
+  jackStoryShareButton: {
     width: 167,
     height: 55,
     borderRadius: 9,
@@ -219,11 +228,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     top: -30,
   },
-  tryAgainButtonWrap: {
+  jackStoryTryAgainButtonWrap: {
     alignSelf: 'center',
     top: -30,
   },
-  tryAgainButton: {
+  jackStoryTryAgainButton: {
     width: 231,
     height: 55,
     borderRadius: 9,
@@ -232,7 +241,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  buttonText: {
+  jackStoryButtonText: {
     fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',

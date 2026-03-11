@@ -1,3 +1,7 @@
+// categorites
+
+import { PressableWithAnimation } from '../Jackstorycomponents/PressableWithAnimation';
+import { STORIES_WITH_QUIZZES } from '../Jackstorydta/storiesWithQuizzes';
 import {
   Animated,
   Image,
@@ -5,15 +9,12 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   useWindowDimensions,
   View,
 } from 'react-native';
 import React, { useEffect, useRef } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import LinearGradient from 'react-native-linear-gradient';
-import { PressableWithAnimation } from '../JackStoryComponents/PressableWithAnimation';
-import { STORIES_WITH_QUIZZES } from '../JackStoryData/storiesWithQuizzes';
 
 const CARD_WIDTH = 280;
 const CARD_MARGIN = 15;
@@ -41,7 +42,7 @@ const QuizCategoriesScrn = () => {
     scrollViewRef.current?.scrollTo({ x: initialScrollX, animated: false });
   }, [screenWidth, initialScrollX]);
 
-  const startQuiz = (storyId: string) => {
+  const jackStrStartQuiz = (storyId: string) => {
     const root = navigation.getParent();
     (root as any)?.navigate('QuizScrn', { storyId });
   };
@@ -49,14 +50,14 @@ const QuizCategoriesScrn = () => {
   return (
     <ImageBackground
       source={require('../JackStoryAssets/images/jackstorrmaingb.png')}
-      style={styles.imageBackground}
+      style={styles.jackStoryImageBackground}
     >
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         showsVerticalScrollIndicator={false}
       >
-        <View style={styles.headerFrame}>
-          <Text style={styles.headerTitle}>QUIZZES</Text>
+        <View style={styles.jackStoryHeaderFrame}>
+          <Text style={styles.jackStoryHeaderTitle}>QUIZZES</Text>
         </View>
 
         <Animated.ScrollView
@@ -70,7 +71,7 @@ const QuizCategoriesScrn = () => {
           snapToAlignment="center"
           decelerationRate="fast"
           contentContainerStyle={[
-            styles.carouselContent,
+            styles.jackStoryCarouselContent,
             { paddingHorizontal, paddingBottom: 120 },
           ]}
           onScroll={Animated.event(
@@ -82,6 +83,7 @@ const QuizCategoriesScrn = () => {
           {STORIES_WITH_QUIZZES.map((story, index) => {
             const cardCenter =
               paddingHorizontal + itemWidth * index + itemWidth / 2;
+
             const scale = scrollX.interpolate({
               inputRange: [
                 cardCenter - screenWidth / 2 - itemWidth,
@@ -91,6 +93,7 @@ const QuizCategoriesScrn = () => {
               outputRange: [SIDE_SCALE, CENTER_SCALE, SIDE_SCALE],
               extrapolate: 'clamp',
             });
+
             const opacity = scrollX.interpolate({
               inputRange: [
                 cardCenter - screenWidth / 2 - itemWidth,
@@ -100,11 +103,12 @@ const QuizCategoriesScrn = () => {
               outputRange: [SIDE_OPACITY, CENTER_OPACITY, SIDE_OPACITY],
               extrapolate: 'clamp',
             });
+
             return (
               <Animated.View
                 key={story.id}
                 style={[
-                  styles.cardWrap,
+                  styles.jackStoryCardWrap,
                   {
                     width: itemWidth,
                     transform: [{ scale }],
@@ -112,25 +116,30 @@ const QuizCategoriesScrn = () => {
                   },
                 ]}
               >
-                <View style={styles.cardFrame}>
-                  <Text style={styles.categoryTitle}>{story.title}</Text>
-                  <Text style={styles.questionCount}>
+                <View style={styles.jackStoryCardFrame}>
+                  <Text style={styles.jackStoryCategoryTitle}>
+                    {story.title}
+                  </Text>
+
+                  <Text style={styles.jackStoryQuestionCount}>
                     Questions: {story.quiz.length}
                   </Text>
+
                   <Image
                     source={require('../JackStoryAssets/images/qjackk.png')}
-                    style={styles.characterImage}
+                    style={styles.jackStoryCharacterImage}
                   />
                 </View>
+
                 <PressableWithAnimation
-                  onPress={() => startQuiz(story.id)}
-                  style={styles.startButtonWrap}
+                  onPress={() => jackStrStartQuiz(story.id)}
+                  style={styles.jackStoryStartButtonWrap}
                 >
                   <LinearGradient
                     colors={['#200653', '#460CB9']}
-                    style={styles.startButton}
+                    style={styles.jackStoryStartButton}
                   >
-                    <Text style={styles.startButtonText}>START</Text>
+                    <Text style={styles.jackStoryStartButtonText}>START</Text>
                   </LinearGradient>
                 </PressableWithAnimation>
               </Animated.View>
@@ -145,10 +154,10 @@ const QuizCategoriesScrn = () => {
 export default QuizCategoriesScrn;
 
 const styles = StyleSheet.create({
-  imageBackground: {
+  jackStoryImageBackground: {
     flex: 1,
   },
-  headerFrame: {
+  jackStoryHeaderFrame: {
     width: '82%',
     alignSelf: 'center',
     minHeight: 66,
@@ -162,22 +171,22 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginTop: 60,
   },
-  headerTitle: {
+  jackStoryHeaderTitle: {
     fontSize: 22,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
   },
-  carouselContent: {
+  jackStoryCarouselContent: {
     paddingVertical: 10,
     alignItems: 'center',
   },
-  cardWrap: {
+  jackStoryCardWrap: {
     paddingHorizontal: CARD_MARGIN,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  cardFrame: {
+  jackStoryCardFrame: {
     width: CARD_WIDTH,
     backgroundColor: '#4B2703',
     borderRadius: 12,
@@ -187,25 +196,25 @@ const styles = StyleSheet.create({
     paddingBottom: 28,
     alignItems: 'center',
   },
-  categoryTitle: {
+  jackStoryCategoryTitle: {
     fontSize: 20,
     color: '#fff',
     fontFamily: 'kefa-bold',
     textAlign: 'center',
     marginBottom: 12,
   },
-  questionCount: {
+  jackStoryQuestionCount: {
     fontSize: 16,
     color: '#fff',
     fontFamily: 'kefa-regular',
     marginBottom: 20,
   },
-  characterImage: {},
-  startButtonWrap: {
+  jackStoryCharacterImage: {},
+  jackStoryStartButtonWrap: {
     alignSelf: 'stretch',
     top: -30,
   },
-  startButton: {
+  jackStoryStartButton: {
     height: 52,
     borderRadius: 10,
     alignItems: 'center',
@@ -215,7 +224,7 @@ const styles = StyleSheet.create({
     width: '70%',
     alignSelf: 'center',
   },
-  startButtonText: {
+  jackStoryStartButtonText: {
     fontSize: 18,
     color: '#fff',
     fontFamily: 'kefa-bold',

@@ -1,21 +1,26 @@
+// stack naviigation
+
+import TeamActivityResultsScrn from './JackStorySrc/Jackstoryscrnns/TeamActivityResultsScrn';
+import TabWays from './TabWays';
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import WelcomeLoader from '../JackStoryViews/WelcomeLoader';
-import JackIntroduceScrn from '../JackStoryViews/JackIntroduceScrn';
-import DashScrn from '../JackStoryViews/DashScrn';
-import AboutScrn from '../JackStoryViews/AboutScrn';
-import SettingsScrn from '../JackStoryViews/SettingsScrn';
-import JackStoriesScrn from '../JackStoryViews/JackStoriesScrn';
-import StoryDetailScrn from '../JackStoryViews/StoryDetailScrn';
-import QuizScrn from '../JackStoryViews/QuizScrn';
-import QuizResultsScrn from '../JackStoryViews/QuizResultsScrn';
-import TeamActivityRulesScrn from '../JackStoryViews/TeamActivityRulesScrn';
-import TeamActivityRoundsScrn from '../JackStoryViews/TeamActivityRoundsScrn';
-import TeamActivityPlayersScrn from '../JackStoryViews/TeamActivityPlayersScrn';
-import TeamActivityRoundScrn from '../JackStoryViews/TeamActivityRoundScrn';
-import TeamActivityGuessScrn from '../JackStoryViews/TeamActivityGuessScrn';
-import TeamActivityResultsScrn from '../JackStoryViews/TeamActivityResultsScrn';
-import TabWays from '../../TabWays';
+
+import JackIntroduceScrn from './JackStorySrc/Jackstoryscrnns/JackIntroduceScrn';
+
+import AboutScrn from './JackStorySrc/Jackstoryscrnns/AboutScrn';
+import SettingsScrn from './JackStorySrc/Jackstoryscrnns/SettingsScrn';
+import JackStoriesScrn from './JackStorySrc/Jackstoryscrnns/JackStoriesScrn';
+import StoryDetailScrn from './JackStorySrc/Jackstoryscrnns/StoryDetailScrn';
+
+// quiz screens
+import QuizScrn from './JackStorySrc/Jackstoryscrnns/QuizScrn';
+import QuizResultsScrn from './JackStorySrc/Jackstoryscrnns/QuizResultsScrn';
+
+// team activity screens
+import TeamActivityRulesScrn from './JackStorySrc/Jackstoryscrnns/TeamActivityRulesScrn';
+
+import TeamActivityGuessScrn from './JackStorySrc/Jackstoryscrnns/TeamActivityGuessScrn';
+import Jackwlcmloader from './JackStorySrc/Jackstoryscrnns/Jackwlcmloader';
 
 export type StackList = {
   WelcomeLoader: undefined;
@@ -55,10 +60,10 @@ export type StackList = {
 
 const NativeStack = createStackNavigator<StackList>();
 
-const StackWays: React.FC = () => {
+const Jackstoryroutees: React.FC = () => {
   return (
     <NativeStack.Navigator screenOptions={{ headerShown: false }}>
-      <NativeStack.Screen name="WelcomeLoader" component={WelcomeLoader} />
+      <NativeStack.Screen name="Jackwlcmloader" component={Jackwlcmloader} />
       <NativeStack.Screen
         name="JackIntroduceScrn"
         component={JackIntroduceScrn}
@@ -74,18 +79,7 @@ const StackWays: React.FC = () => {
         name="TeamActivityRulesScrn"
         component={TeamActivityRulesScrn}
       />
-      <NativeStack.Screen
-        name="TeamActivityRoundsScrn"
-        component={TeamActivityRoundsScrn}
-      />
-      <NativeStack.Screen
-        name="TeamActivityPlayersScrn"
-        component={TeamActivityPlayersScrn}
-      />
-      <NativeStack.Screen
-        name="TeamActivityRoundScrn"
-        component={TeamActivityRoundScrn}
-      />
+
       <NativeStack.Screen
         name="TeamActivityGuessScrn"
         component={TeamActivityGuessScrn}
@@ -98,4 +92,4 @@ const StackWays: React.FC = () => {
   );
 };
 
-export default StackWays;
+export default Jackstoryroutees;
